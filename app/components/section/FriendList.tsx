@@ -7,6 +7,7 @@ import axios from "axios";
 import Avatar from "react-avatar";
 
 import Friend from "../ui/Friend";
+import FriendSkeleton from "../ui/FriendSkeleton";
 
 const FriendList = () => {
   const params = useParams();
@@ -38,10 +39,11 @@ const FriendList = () => {
       <div className="h-[calc(100vh-100px)]">
         <div className="flex flex-col gap-3 overflow-y-scroll h-full px-4 pb-4">
           {/* chats */}
-          {isLoading && "Loading..."}
-          {filteredUsers?.map((user) => (
-            <Friend key={user.id} user={user} receiverId={receiverId} />
-          ))}
+          {isLoading
+            ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => <FriendSkeleton key={i} />)
+            : filteredUsers?.map((user) => (
+                <Friend key={user.id} user={user} receiverId={receiverId} />
+              ))}
         </div>
       </div>
     </div>
