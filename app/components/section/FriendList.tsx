@@ -1,35 +1,21 @@
 "use client";
 
-import React from "react";
-import ChatUser from "../ui/ChatUser";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-interface QueryType {
-  id: string;
-  username: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import ChatUser from "../ui/ChatUser";
 
-interface UType {
-  email: string;
-  id: string;
-}
-
-const ChatList = () => {
+const FriendList = () => {
   const params = useParams();
   const { id } = params;
   const receiverId = id as string;
 
   const { data } = useSession();
-  const user = data?.user as UType;
+  const user = data?.user as SessionType;
 
-  const { data: users, isLoading } = useQuery<QueryType[]>({
+  const { data: users, isLoading } = useQuery<UserType[]>({
     queryKey: ["fetch_users"],
     queryFn: async () => {
       const { data } = await axios.get("/api/users");
@@ -60,4 +46,4 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default FriendList;

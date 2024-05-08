@@ -2,17 +2,8 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 
-interface userType {
-  id: string;
-  username: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 interface Props {
-  user: userType;
+  user: UserType;
   receiverId: string;
 }
 

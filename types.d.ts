@@ -1,4 +1,4 @@
-interface userType {
+interface UserType {
   id: string;
   email: string;
   username: string;
@@ -7,7 +7,7 @@ interface userType {
   updatedAt: Date;
 }
 
-interface sessionType {
+interface SessionType {
   id: string;
   email: string;
   username: string;
