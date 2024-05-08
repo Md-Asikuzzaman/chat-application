@@ -13,28 +13,13 @@ interface Props {
   receiverId: string;
 }
 
-interface queryType {
-  id: string;
-  email: string;
-  username: string;
-  receiverId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface UType {
-  id: string;
-  email: string;
-  username: string;
-}
-
 const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
   const [menu, setMenu] = useState(false);
 
   const { data } = useSession();
-  const loggedin = data?.user as UType;
+  const loggedin = data?.user as sessionType;
 
-  const { data: user, isLoading } = useQuery<queryType>({
+  const { data: user, isLoading } = useQuery<userType>({
     queryKey: ["fetch_user"],
     queryFn: async () => {
       const { data } = await axios.get(`/api/users/${receiverId}`, {
