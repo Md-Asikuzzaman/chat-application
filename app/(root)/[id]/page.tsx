@@ -47,8 +47,9 @@ const Page: NextPage<Props> = ({}) => {
   // send message
   const { mutate } = useMutation({
     mutationKey: ["send_message"],
-    mutationFn: async (data: object) => {
-      const { data: message } = await axios.post("/api/messages", data, {
+
+    mutationFn: async (newMessage: object) => {
+      const { data: message } = await axios.post("/api/messages", newMessage, {
         baseURL: process.env.NEXTAUTH_URL,
       });
       return message;
@@ -60,6 +61,31 @@ const Page: NextPage<Props> = ({}) => {
       });
 
       scrollToBottom();
+    },
+
+    onMutate: async (newMessage: object) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["fetch_messages"] });
+
+      // Snapshot the previous value
+      const previousMessages = queryClient.getQueryData(["fetch_messages"]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(["fetch_messages"], (old: []) => [
+        ...old,
+        newMessage,
+      ]);
+
+      // Return a context object with the snapshotted value
+      return { previousMessages };
+    },
+
+    onError: (err, newTodo, context) => {
+      queryClient.setQueryData(["todos"], context?.previousMessages);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
     },
   });
 
