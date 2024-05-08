@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { NextPage } from "next";
 import Link from "next/link";
 import Avatar from "react-avatar";
@@ -9,6 +11,19 @@ interface Props {
 }
 
 const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
+  const { data: getMessages } = useQuery<MessageType[]>({
+    queryKey: ["getMessage", id],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/messages/${id}`, {
+        baseURL: process.env.NEXTAUTH_URL,
+      });
+
+      return data.messages;
+    },
+
+    refetchInterval: 1000,
+  });
+
   return (
     <Link href={`/chat/${id}`}>
       <div
@@ -21,7 +36,7 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
         <div>
           <Avatar name={username} size="35" round={true} />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 truncate">
           <div className="flex items-center justify-between">
             <h4
               className={`font-semibold ${
@@ -40,13 +55,13 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
           </div>
           <div className="flex items-center justify-between">
             <p
-              className={`text-[15px] ${
+              className={`text-[15px] flex-1 ${
                 receiverId === id ? "text-gray-300" : "text-black"
               }`}
             >
-              Hello, how are you?
+              {getMessages ? getMessages[0]?.message : "Loading..."}
             </p>
-            <FaUserCircle size={15} />
+            <FaUserCircle className="shrink-0" size={15} />
           </div>
         </div>
       </div>
