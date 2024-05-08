@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface Props {}
 
@@ -44,6 +44,10 @@ const Page: NextPage<Props> = ({}) => {
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [message]);
+
   // send message
   const { mutate } = useMutation({
     mutationKey: ["send_message"],
@@ -59,8 +63,6 @@ const Page: NextPage<Props> = ({}) => {
       queryClient.invalidateQueries({
         queryKey: ["fetch_messages"],
       });
-
-      scrollToBottom();
     },
 
     onMutate: async (newMessage: object) => {
@@ -80,12 +82,13 @@ const Page: NextPage<Props> = ({}) => {
       return { previousMessages };
     },
 
-    onError: (err, newTodo, context) => {
+    onError: (err, newMessage, context) => {
       queryClient.setQueryData(["todos"], context?.previousMessages);
     },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
+      scrollToBottom();
     },
   });
 
