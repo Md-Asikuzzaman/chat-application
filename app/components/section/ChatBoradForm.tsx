@@ -94,12 +94,22 @@ const ChatBoradForm: NextPage<Props> = ({
           placeholder="Type a message here..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          required
         />
         <button type="submit" hidden className="hidden">
           send
         </button>
-        <MdEmojiEmotions className="shrink-0" size={22} />
-        <BsFillSendFill className="shrink-0" size={22} />
+
+        <div className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer ">
+          <MdEmojiEmotions className="shrink-0 text-violet-700" size={22} />
+        </div>
+
+        <div
+          onClick={handleSubmit}
+          className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
+        >
+          <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
+        </div>
       </div>
     </form>
   );
