@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {}
 
@@ -114,6 +114,7 @@ const Page: NextPage<Props> = ({}) => {
         senderId={senderId}
         receiverId={receiverId}
         scrollRef={scrollRef}
+        scrollToBottom={scrollToBottom}
       />
 
       {/* message send input */}

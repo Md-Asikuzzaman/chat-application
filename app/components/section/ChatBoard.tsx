@@ -3,11 +3,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
+import { useEffect, useState } from "react";
 
 interface Props {
   senderId: string;
   receiverId: string;
   scrollRef: any;
+  scrollToBottom: any;
 }
 interface queryType {
   id: string;
@@ -18,7 +20,13 @@ interface queryType {
   updatedAt: Date;
 }
 
-const ChatBoard: NextPage<Props> = ({ receiverId, senderId, scrollRef }) => {
+const ChatBoard: NextPage<Props> = ({
+  receiverId,
+  senderId,
+  scrollRef,
+  scrollToBottom,
+}) => {
+  const [previousMessages, setPreviousMessages] = useState<queryType[]>([]);
   const { data: messages } = useQuery<queryType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
@@ -31,6 +39,22 @@ const ChatBoard: NextPage<Props> = ({ receiverId, senderId, scrollRef }) => {
 
     refetchInterval: 1000,
   });
+
+  useEffect(() => {
+    // Compare the previousMessages with the messages fetched from the server
+    if (messages && previousMessages.length > 0) {
+      // Compare the lengths to check if there are new messages
+      if (messages.length > previousMessages.length) {
+        scrollToBottom();
+      } else if (messages.length < previousMessages.length) {
+        // Handle deleted messages here (if applicable)
+        console.log("Some messages have been deleted");
+      }
+    }
+
+    // Update previousMessages with the latest messages
+    setPreviousMessages(messages || []);
+  }, [messages]);
 
   const filteredMessage = messages?.filter(
     (message) =>

@@ -18,7 +18,7 @@ interface Props {
 
 const ChatUser: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
   return (
-    <Link href={`/${id}`}>
+    <Link href={`/chat/${id}`}>
       <div
         className={`p-4 rounded-xl flex justify-between items-center gap-4 ${
           receiverId === id
