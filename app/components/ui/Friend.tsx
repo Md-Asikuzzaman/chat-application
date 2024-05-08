@@ -8,7 +8,7 @@ interface Props {
   receiverId: string;
 }
 
-const ChatUser: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
+const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
   return (
     <Link href={`/chat/${id}`}>
       <div
@@ -54,4 +54,4 @@ const ChatUser: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
   );
 };
 
-export default ChatUser;
+export default Friend;

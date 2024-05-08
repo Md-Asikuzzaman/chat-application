@@ -4,10 +4,9 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-import ChatUser from "../ui/ChatUser";
-
 import Avatar from "react-avatar";
+
+import Friend from "../ui/Friend";
 
 const FriendList = () => {
   const params = useParams();
@@ -41,7 +40,7 @@ const FriendList = () => {
           {/* chats */}
           {isLoading && "Loading..."}
           {filteredUsers?.map((user) => (
-            <ChatUser key={user.id} user={user} receiverId={receiverId} />
+            <Friend key={user.id} user={user} receiverId={receiverId} />
           ))}
         </div>
       </div>

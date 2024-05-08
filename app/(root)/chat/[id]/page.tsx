@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import ChatBoardHeader from "@/app/components/section/ChatBoardHeader";
 import ChatBoard from "@/app/components/section/ChatBoard";
 import ChatBoradForm from "@/app/components/section/ChatBoradForm";
+import LogOutButton from "@/app/components/ui/LogOutButton";
 
 const Page = () => {
   // Get sender id
@@ -33,7 +34,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex-1 relative flex flex-col h-full">
+    <div className="flex-1 flex flex-col h-full relative">
       {/* chat board header */}
       <ChatBoardHeader receiverId={receiverId} />
 
@@ -51,6 +52,9 @@ const Page = () => {
         receiverId={receiverId}
         scrollToBottom={scrollToBottom}
       />
+
+      {/* logout button */}
+      <LogOutButton />
     </div>
   );
 };
