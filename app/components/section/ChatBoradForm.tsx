@@ -10,6 +10,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+import { motion } from "framer-motion";
+
 interface Props {
   senderId: string;
   receiverId: string;
@@ -75,11 +77,13 @@ const ChatBoradForm: NextPage<Props> = ({
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    mutate({
-      message,
-      senderId,
-      receiverId,
-    });
+    if (message) {
+      mutate({
+        message,
+        senderId,
+        receiverId,
+      });
+    }
 
     setMessage("");
   };
@@ -104,12 +108,29 @@ const ChatBoradForm: NextPage<Props> = ({
           <MdEmojiEmotions className="shrink-0 text-violet-700" size={22} />
         </div>
 
-        <div
-          onClick={handleSubmit}
-          className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
-        >
-          <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
-        </div>
+        {message.length > 0 && (
+          <motion.div
+            initial={{
+              scale: 0,
+              height: 0,
+              width: 0,
+            }}
+            animate={{
+              scale: 1,
+              height: "40px",
+              width: "40px",
+            }}
+            exit={{
+              scale: 0,
+              height: 0,
+              width: 0,
+            }}
+            onClick={handleSubmit}
+            className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
+          >
+            <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
+          </motion.div>
+        )}
       </div>
     </form>
   );
