@@ -11,14 +11,6 @@ interface Props {
   scrollRef: any;
   scrollToBottom: any;
 }
-interface queryType {
-  id: string;
-  message: string;
-  senderId: string;
-  receiverId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 const ChatBoard: NextPage<Props> = ({
   receiverId,
@@ -26,8 +18,8 @@ const ChatBoard: NextPage<Props> = ({
   scrollRef,
   scrollToBottom,
 }) => {
-  const [previousMessages, setPreviousMessages] = useState<queryType[]>([]);
-  const { data: messages } = useQuery<queryType[]>({
+  const [previousMessages, setPreviousMessages] = useState<MessageType[]>([]);
+  const { data: messages } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
       const { data } = await axios.get("/api/messages", {
