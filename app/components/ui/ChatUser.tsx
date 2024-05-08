@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import Avatar from "react-avatar";
 import { FaUserCircle } from "react-icons/fa";
 
 interface Props {
@@ -18,7 +19,7 @@ const ChatUser: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
         }`}
       >
         <div>
-          <FaUserCircle size={25} />
+          <Avatar name={username} size="35" round={true} />
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between">

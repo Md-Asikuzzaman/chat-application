@@ -9,6 +9,7 @@ import axios from "axios";
 import { AiOutlineLogout } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
+import Avatar from "react-avatar";
 
 interface Props {
   receiverId: string;
@@ -33,14 +34,14 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
 
   return (
     <div className="flex items-center gap-5 py-4 relative">
-      <FaUserCircle size={35} />
+      <Avatar name={user?.username} size="35" round={true} />
       <div className="flex-1 flex justify-between">
         <div>
           <h4 className="font-semibold">
             {isLoading && "Loading..."}
             {user?.username}
           </h4>
-          <p className="text-xs">Last Seen 2 min Ago</p>
+          <p className="text-xs">Last seen 2 min ago</p>
         </div>
         <div
           onClick={(e) => {
@@ -79,7 +80,7 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
               className="w-[230px] bg-zinc-300 absolute right-0 top-0 rounded-lg shadow-lg p-4 overflow-hidden"
             >
               <div className="flex items-center gap-3 border-b border-violet-300 pb-3 mb-3">
-                <FaUserCircle size={30} />
+                <Avatar name={loggedin.username} size="30" round={true} />
                 <div>
                   <h3>
                     {loggedin.username ? loggedin.username : "Loading..."}

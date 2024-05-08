@@ -7,6 +7,8 @@ import axios from "axios";
 
 import ChatUser from "../ui/ChatUser";
 
+import Avatar from "react-avatar";
+
 const FriendList = () => {
   const params = useParams();
   const { id } = params;
@@ -30,7 +32,8 @@ const FriendList = () => {
 
   return (
     <div className="w-[275px] sm:w-[300px] md:w-[375px] lg:w-[475px] bg-slate-300">
-      <h3 className="text-2xl text-black font-semibold mb-1 px-4 py-3">
+      <h3 className="text-2xl text-black font-semibold mb-1 px-4 py-3 flex items-center gap-3">
+        <Avatar name={user?.username} size="35" round={true} />
         Friends List
       </h3>
       <div className="h-[calc(100vh-100px)]">
