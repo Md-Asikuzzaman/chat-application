@@ -1,13 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { NextPage } from "next";
+import { useState } from "react";
+
+import { signOut, useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
+
 import { AiOutlineLogout } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
-
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 
 interface Props {
   receiverId: string;
@@ -17,9 +18,9 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
   const [menu, setMenu] = useState(false);
 
   const { data } = useSession();
-  const loggedin = data?.user as sessionType;
+  const loggedin = data?.user as SessionType;
 
-  const { data: user, isLoading } = useQuery<userType>({
+  const { data: user, isLoading } = useQuery<UserType>({
     queryKey: ["fetch_user"],
     queryFn: async () => {
       const { data } = await axios.get(`/api/users/${receiverId}`, {

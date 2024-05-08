@@ -1,3 +1,5 @@
+"use client";
+
 import { NextPage } from "next";
 
 import { BsFillSendFill } from "react-icons/bs";
@@ -6,27 +8,21 @@ import { TiAttachment } from "react-icons/ti";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   senderId: string;
   receiverId: string;
+  scrollToBottom: () => void;
 }
 
-const ChatBoradForm: NextPage<Props> = ({ senderId, receiverId }) => {
+const ChatBoradForm: NextPage<Props> = ({
+  senderId,
+  receiverId,
+  scrollToBottom,
+}) => {
   const [message, setMessage] = useState<string>("");
   const queryClient = useQueryClient();
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  };
 
   useEffect(() => {
     scrollToBottom();
@@ -72,13 +68,12 @@ const ChatBoradForm: NextPage<Props> = ({ senderId, receiverId }) => {
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
-      scrollToBottom();
+      // scrollToBottom();
     },
   });
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(message);
 
     mutate({
       message,

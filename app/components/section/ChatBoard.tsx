@@ -3,13 +3,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 
 interface Props {
   senderId: string;
   receiverId: string;
-  scrollRef: any;
-  scrollToBottom: any;
+  scrollRef: LegacyRef<HTMLDivElement> | null;
+  scrollToBottom: () => void;
 }
 
 const ChatBoard: NextPage<Props> = ({
