@@ -2,7 +2,6 @@ interface UserType {
   id: string;
   email: string;
   username: string;
-  receiverId: string;
   createdAt: Date;
   updatedAt: Date;
 }

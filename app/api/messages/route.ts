@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 interface ApiResponse {
   message?: string;
-  messages?: object[];
+  messages?: MessageType[];
 }
 
 export async function GET(): Promise<NextResponse<ApiResponse>> {
