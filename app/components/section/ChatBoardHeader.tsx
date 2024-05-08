@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
@@ -7,8 +6,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { signOut } from "next-auth/react";
+import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 
 interface Props {
   receiverId: string;
@@ -23,8 +22,17 @@ interface queryType {
   updatedAt: Date;
 }
 
+interface UType {
+  id: string;
+  email: string;
+  username: string;
+}
+
 const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
   const [menu, setMenu] = useState(false);
+
+  const { data } = useSession();
+  const loggedin = data?.user as UType;
 
   const { data: user, isLoading } = useQuery<queryType>({
     queryKey: ["fetch_user"],
@@ -87,7 +95,9 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
               <div className="flex items-center gap-3 border-b border-violet-300 pb-3 mb-3">
                 <FaUserCircle size={30} />
                 <div>
-                  <h3>{user?.username}</h3>
+                  <h3>
+                    {loggedin.username ? loggedin.username : "Loading..."}
+                  </h3>
                 </div>
               </div>
 
