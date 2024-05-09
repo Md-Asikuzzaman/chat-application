@@ -99,7 +99,7 @@ const ChatBoard: NextPage<Props> = ({
   );
 
   if (isLoading) {
-    return <h1>loading...</h1>;
+    return <h3 className="px-4">loading...</h3>;
   }
 
   return (
