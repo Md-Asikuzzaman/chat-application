@@ -47,7 +47,7 @@ const LogOutButton = () => {
             transition={{
               ease: "backInOut",
             }}
-            className="w-[230px] bg-zinc-300 absolute right-0 top-0 rounded-lg shadow-lg p-4 overflow-hidden"
+            className="w-[230px] bg-zinc-300 absolute right-0 top-0 rounded-lg shadow-lg p-4 overflow-hidden z-50"
           >
             <div className="flex items-center gap-3 border-b border-violet-300 pb-3 mb-3">
               <Avatar name={user.username} size="30" round={true} />
