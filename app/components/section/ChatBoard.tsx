@@ -3,9 +3,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
-import { LegacyRef, useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { MdDelete } from "react-icons/md";
 
 interface Props {
@@ -98,6 +98,34 @@ const ChatBoard: NextPage<Props> = ({
       (message.receiverId === senderId && message.senderId === receiverId)
   );
 
+  // Check chat Inview
+  const ref = useRef(null);
+  const isInView = useInView(ref);
+
+  // Update message based on InView
+
+  const { mutate: updateStatus } = useMutation({
+    mutationKey: ["update_message"],
+    mutationFn: async (id: string) => {
+      const { data } = await axios.patch(`/api/messages/${id}`, {
+        baseURL: process.env.NEXTAUTH_URL,
+      });
+      return data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["fetch_messages", "fetch_users"],
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (isInView) {
+      updateStatus(receiverId);
+    }
+  }, [isInView]);
+
   if (isLoading) {
     return <h3 className="px-4">loading...</h3>;
   }
@@ -127,7 +155,10 @@ const ChatBoard: NextPage<Props> = ({
             }`}
           >
             {/* main chat */}
-            <div className="flex items-center gap-1 max-w-[90%] group/item">
+            <div
+              className="flex items-center gap-1 max-w-[90%] group/item"
+              ref={ref}
+            >
               <div
                 onClick={() => mutate(data.id && data.id)}
                 className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-10 group-hover/item:translate-x-0 shrink-0 transition-transform ${

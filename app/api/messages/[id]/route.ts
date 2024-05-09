@@ -61,3 +61,30 @@ export async function DELETE(
     );
   }
 }
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+): Promise<NextResponse<ApiResponse>> {
+  console.log(params.id);
+
+  try {
+    await prisma.message.updateMany({
+      data: {
+        status: 1,
+      },
+      where: {
+        senderId: params?.id,
+      },
+    });
+
+    return NextResponse.json({ message: "Status Updated!!" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "someting went wrong!",
+      },
+      { status: 500 }
+    );
+  }
+}

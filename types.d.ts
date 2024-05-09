@@ -11,6 +11,7 @@ interface MessageType {
   message: string;
   senderId: string;
   receiverId: string;
+  status: number;
   createdAt: Date;
   updatedAt: Date;
 }

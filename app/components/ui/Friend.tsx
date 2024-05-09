@@ -4,6 +4,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 import Avatar from "react-avatar";
 import { FaUserCircle } from "react-icons/fa";
+import { MdMarkChatUnread } from "react-icons/md";
 
 interface Props {
   user: UserType;
@@ -29,7 +30,7 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
       <div
         className={`p-4 rounded-xl flex justify-between items-center gap-4 ${
           receiverId === id
-            ? "bg-violet-600 hover:bg-violet-700"
+            ? "bg-violet-500 hover:bg-violet-600"
             : "bg-white hover:bg-gray-100"
         }`}
       >
@@ -53,15 +54,28 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
               3:00 PM
             </span>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {getMessages && getMessages[0]?.status === 0 && (
+              <MdMarkChatUnread
+                className="shrink-0 text-violet-600"
+                size={15}
+              />
+            )}
             <p
               className={`text-[15px] flex-1 ${
-                receiverId === id ? "text-gray-300" : "text-black"
+                receiverId === id ? "text-zinc-200" : "text-zinc-400"
+              } ${
+                getMessages &&
+                getMessages[0]?.status === 0 &&
+                "font-semibold text-violet-600"
               }`}
             >
-              {getMessages ? getMessages[0]?.message : "Loading..."}
+              {getMessages && getMessages.length >= 1
+                ? getMessages
+                  ? getMessages[0]?.message
+                  : "Loading..."
+                : "no message"}
             </p>
-            <FaUserCircle className="shrink-0" size={15} />
           </div>
         </div>
       </div>
