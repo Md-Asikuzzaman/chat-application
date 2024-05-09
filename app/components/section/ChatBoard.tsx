@@ -99,11 +99,16 @@ const ChatBoard: NextPage<Props> = ({
   );
 
   // Check chat Inview
-  const ref = useRef(null);
-  const isInView = useInView(ref);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref);
+
+  useEffect(() => {
+    if (inView) {
+      updateStatus(receiverId);
+    }
+  }, [inView]);
 
   // Update message based on InView
-
   const { mutate: updateStatus } = useMutation({
     mutationKey: ["update_message"],
     mutationFn: async (id: string) => {
@@ -120,12 +125,6 @@ const ChatBoard: NextPage<Props> = ({
     },
   });
 
-  useEffect(() => {
-    if (isInView) {
-      updateStatus(receiverId);
-    }
-  }, [isInView]);
-
   if (isLoading) {
     return <h3 className="px-4">loading...</h3>;
   }
@@ -141,10 +140,12 @@ const ChatBoard: NextPage<Props> = ({
             initial={{
               scale: 0,
               opacity: 0,
+              y: 200,
             }}
             animate={{
               scale: 1,
               opacity: 1,
+              y: 0,
             }}
             transition={{
               ease: "backInOut",
