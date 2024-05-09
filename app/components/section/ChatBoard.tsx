@@ -123,17 +123,17 @@ const ChatBoard: NextPage<Props> = ({
             }`}
           >
             {/* main chat */}
-            <div className="flex items-center gap-1 max-w-[90%]">
+            <div className="flex items-center gap-1 max-w-[90%] group/item">
               <div
                 onClick={() => mutate(data.id && data.id)}
-                className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-0 ${
+                className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-10 group-hover/item:translate-x-0 shrink-0 transition-transform ${
                   senderId === data.senderId ? "grid" : "hidden"
                 }`}
               >
                 <MdDelete className="text-zinc-500" />
               </div>
               <p
-                className={`inline-block py-3 px-4 rounded-xl text-white z-20 ${
+                className={`inline-block py-3 px-4 rounded-xl text-white z-20 selection:text-green-600 selection:bg-slate-900 ${
                   senderId === data.senderId ? "bg-violet-500" : "bg-zinc-500"
                 }`}
               >
