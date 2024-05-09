@@ -39,3 +39,25 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+): Promise<NextResponse<ApiResponse>> {
+  try {
+    await prisma.message.delete({
+      where: {
+        id: params?.id,
+      },
+    });
+
+    return NextResponse.json({ message: "Message deleted!!" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "someting went wrong!",
+      },
+      { status: 500 }
+    );
+  }
+}

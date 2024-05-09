@@ -1,9 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { LegacyRef, useEffect, useState } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { MdDelete } from "react-icons/md";
 
 interface Props {
   senderId: string;
@@ -19,6 +22,9 @@ const ChatBoard: NextPage<Props> = ({
   scrollToBottom,
 }) => {
   const [previousMessages, setPreviousMessages] = useState<MessageType[]>([]);
+  const queryClient = useQueryClient();
+
+  // Fetch messages based on internal times
   const { data: messages } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
@@ -32,15 +38,52 @@ const ChatBoard: NextPage<Props> = ({
     refetchInterval: 1000,
   });
 
+  // Delete messages
+  const { mutate } = useMutation({
+    mutationKey: ["delete_message"],
+    mutationFn: async (id: string) => {
+      const { data } = await axios.delete(`/api/messages/${id}`, {
+        baseURL: process.env.NEXTAUTH_URL,
+      });
+      return data;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["fetch_messages"],
+      });
+    },
+
+    onMutate: async (id: string) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["fetch_messages"] });
+
+      // Snapshot the previous value
+      const previousMessages = queryClient.getQueryData(["fetch_messages"]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(["fetch_messages"], (old: MessageType[]) => {
+        // Filter out posts with IDs present in the 'id' array
+        return old.filter((message) => message.id !== id);
+      });
+
+      return { previousMessages };
+    },
+
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
+      // scrollToBottom();
+    },
+  });
+
+  // Check the very last message is come from the server
   useEffect(() => {
-    // Compare the previousMessages with the messages fetched from the server
     if (messages && previousMessages.length > 0) {
-      // Compare the lengths to check if there are new messages
       if (messages.length > previousMessages.length) {
         scrollToBottom();
       } else if (messages.length < previousMessages.length) {
-        // Handle deleted messages here (if applicable)
-        console.log("Some messages have been deleted");
+        scrollToBottom();
       }
     }
 
@@ -48,6 +91,7 @@ const ChatBoard: NextPage<Props> = ({
     setPreviousMessages(messages || []);
   }, [messages]);
 
+  // Filter all messages by sender and receiver id
   const filteredMessage = messages?.filter(
     (message) =>
       (message.senderId === senderId && message.receiverId === receiverId) ||
@@ -56,25 +100,46 @@ const ChatBoard: NextPage<Props> = ({
 
   return (
     <div
-      className="flex flex-col gap-3 h-[calc(100vh-230px)] overflow-y-scroll px-4"
+      className="flex flex-col gap-3 h-[calc(100vh-230px)] overflow-y-scroll overflow-x-hidden px-4"
       ref={scrollRef}
     >
-      {filteredMessage?.map((data, i) => (
-        <div
-          key={i}
-          className={`flex ${
-            senderId === data.senderId ? "justify-end" : "justify-start"
-          }`}
-        >
-          <p
-            className={`inline-block py-3 px-4 rounded-xl text-white max-w-[90%] ${
-              senderId === data.senderId ? "bg-violet-500" : "bg-zinc-500"
+      <AnimatePresence mode="popLayout">
+        {filteredMessage?.map((data, i) => (
+          <motion.div
+            initial={{
+              scale: 0,
+            }}
+            animate={{
+              scale: 1,
+            }}
+            transition={{
+              ease: "backInOut",
+            }}
+            key={i}
+            className={`flex shrink-0 ${
+              senderId === data.senderId ? "justify-end" : "justify-start"
             }`}
           >
-            {data.message}
-          </p>
-        </div>
-      ))}
+            <div className="flex items-center gap-1">
+              <div
+                onClick={() => mutate(data.id && data.id)}
+                className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-0 ${
+                  senderId === data.senderId ? "grid" : "hidden"
+                }`}
+              >
+                <MdDelete className="text-zinc-500" />
+              </div>
+              <p
+                className={`inline-block py-3 px-4 rounded-xl text-white max-w-[90%] z-20 shrink-0 ${
+                  senderId === data.senderId ? "bg-violet-500" : "bg-zinc-500"
+                }`}
+              >
+                {data.message}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

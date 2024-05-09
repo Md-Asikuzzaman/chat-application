@@ -28,8 +28,6 @@ const ChatBoradForm: NextPage<Props> = ({
   const [emojiPlate, setEmojiPlate] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  console.log(emojiPlate);
-
   useEffect(() => {
     scrollToBottom();
   }, [message]);
@@ -59,7 +57,7 @@ const ChatBoradForm: NextPage<Props> = ({
       const previousMessages = queryClient.getQueryData(["fetch_messages"]);
 
       // Optimistically update to the new value
-      queryClient.setQueryData(["fetch_messages"], (old: []) => [
+      queryClient.setQueryData(["fetch_messages"], (old: MessageType[]) => [
         ...old,
         newMessage,
       ]);
@@ -69,12 +67,11 @@ const ChatBoradForm: NextPage<Props> = ({
     },
 
     onError: (err, newMessage, context) => {
-      queryClient.setQueryData(["todos"], context?.previousMessages);
+      queryClient.setQueryData(["fetch_messages"], context?.previousMessages);
     },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
-      // scrollToBottom();
     },
   });
 
