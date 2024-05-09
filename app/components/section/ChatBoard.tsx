@@ -25,7 +25,7 @@ const ChatBoard: NextPage<Props> = ({
   const queryClient = useQueryClient();
 
   // Fetch messages based on internal times
-  const { data: messages } = useQuery<MessageType[]>({
+  const { data: messages, isLoading } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
       const { data } = await axios.get("/api/messages", {
@@ -98,9 +98,13 @@ const ChatBoard: NextPage<Props> = ({
       (message.receiverId === senderId && message.senderId === receiverId)
   );
 
+  if (isLoading) {
+    return <h1>loading...</h1>;
+  }
+
   return (
     <div
-      className="flex flex-col gap-3 h-[calc(100vh-230px)] overflow-y-scroll overflow-x-hidden px-4"
+      className="flex flex-col gap-3 h-[calc(100vh-210px)] overflow-y-scroll overflow-x-hidden px-5 py-2"
       ref={scrollRef}
     >
       <AnimatePresence mode="popLayout">

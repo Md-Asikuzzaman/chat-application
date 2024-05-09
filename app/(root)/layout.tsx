@@ -11,7 +11,7 @@ const Layout: NextPage<Props> = ({ children }) => {
       <div className="container mx-auto p-5 flex flex-col">
         <div className="bg-gray-200 rounded-xl flex-1 flex justify-between overflow-hidden">
           <FriendList />
-          <div className="flex-1 px-4">{children}</div>
+          <div className="flex-1">{children}</div>
         </div>
       </div>
     </section>

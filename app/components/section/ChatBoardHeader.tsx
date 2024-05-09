@@ -20,7 +20,7 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
   });
 
   return (
-    <div className="flex items-center gap-5 py-4 relative">
+    <div className="flex items-center gap-5 py-4 relative bg-white px-4">
       <Avatar name={user?.username} size="35" round={true} />
       <div className="flex-1 flex justify-between">
         <div>
