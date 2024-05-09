@@ -3,7 +3,7 @@
 import { NextPage } from "next";
 
 import { BsFillSendFill } from "react-icons/bs";
-import { MdEmojiEmotions } from "react-icons/md";
+import { MdClose, MdEmojiEmotions } from "react-icons/md";
 import { TiAttachment } from "react-icons/ti";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
+import EmojiPlate from "../ui/EmojiPlate";
 
 interface Props {
   senderId: string;
@@ -24,7 +25,10 @@ const ChatBoradForm: NextPage<Props> = ({
   scrollToBottom,
 }) => {
   const [message, setMessage] = useState<string>("");
+  const [emojiPlate, setEmojiPlate] = useState<boolean>(false);
   const queryClient = useQueryClient();
+
+  console.log(emojiPlate);
 
   useEffect(() => {
     scrollToBottom();
@@ -86,6 +90,7 @@ const ChatBoradForm: NextPage<Props> = ({
     }
 
     setMessage("");
+    setEmojiPlate(false);
   };
 
   return (
@@ -104,10 +109,22 @@ const ChatBoradForm: NextPage<Props> = ({
           send
         </button>
 
-        <div className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 flex items-center justify-center rounded-full cursor-pointer transition-all">
-          <MdEmojiEmotions className="shrink-0 text-violet-700" size={22} />
+        {/* Emoji plate */}
+        <EmojiPlate setMessage={setMessage} emojiPlate={emojiPlate} />
+
+        {/* Emoji send button */}
+        <div
+          onClick={() => setEmojiPlate((prev) => !prev)}
+          className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 flex items-center justify-center rounded-full cursor-pointer transition-all"
+        >
+          {!emojiPlate ? (
+            <MdEmojiEmotions className="shrink-0 text-violet-700" size={24} />
+          ) : (
+            <MdClose className="shrink-0 text-violet-700" size={24} />
+          )}
         </div>
 
+        {/* Mesasge send button */}
         <AnimatePresence mode="wait">
           {message.length > 0 && (
             <motion.div
