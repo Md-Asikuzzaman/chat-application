@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   senderId: string;
@@ -104,33 +104,38 @@ const ChatBoradForm: NextPage<Props> = ({
           send
         </button>
 
-        <div className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer ">
+        <div className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 flex items-center justify-center rounded-full cursor-pointer transition-all">
           <MdEmojiEmotions className="shrink-0 text-violet-700" size={22} />
         </div>
 
-        {message.length > 0 && (
-          <motion.div
-            initial={{
-              scale: 0,
-              height: 0,
-              width: 0,
-            }}
-            animate={{
-              scale: 1,
-              height: "40px",
-              width: "40px",
-            }}
-            exit={{
-              scale: 0,
-              height: 0,
-              width: 0,
-            }}
-            onClick={handleSubmit}
-            className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
-          >
-            <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
-          </motion.div>
-        )}
+        <AnimatePresence mode="wait">
+          {message.length > 0 && (
+            <motion.div
+              initial={{
+                scale: 0,
+                height: 0,
+                width: 0,
+              }}
+              animate={{
+                scale: 1,
+                height: "40px",
+                width: "40px",
+              }}
+              exit={{
+                scale: 0,
+                height: 0,
+                width: 0,
+              }}
+              transition={{
+                ease: "backIn",
+              }}
+              onClick={handleSubmit}
+              className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
+            >
+              <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </form>
   );
