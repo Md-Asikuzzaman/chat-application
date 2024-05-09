@@ -108,9 +108,11 @@ const ChatBoard: NextPage<Props> = ({
           <motion.div
             initial={{
               scale: 0,
+              opacity: 0,
             }}
             animate={{
               scale: 1,
+              opacity: 1,
             }}
             transition={{
               ease: "backInOut",
@@ -120,7 +122,8 @@ const ChatBoard: NextPage<Props> = ({
               senderId === data.senderId ? "justify-end" : "justify-start"
             }`}
           >
-            <div className="flex items-center gap-1">
+            {/* main chat */}
+            <div className="flex items-center gap-1 max-w-[90%]">
               <div
                 onClick={() => mutate(data.id && data.id)}
                 className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-0 ${
@@ -130,7 +133,7 @@ const ChatBoard: NextPage<Props> = ({
                 <MdDelete className="text-zinc-500" />
               </div>
               <p
-                className={`inline-block py-3 px-4 rounded-xl text-white max-w-[90%] z-20 shrink-0 ${
+                className={`inline-block py-3 px-4 rounded-xl text-white z-20 ${
                   senderId === data.senderId ? "bg-violet-500" : "bg-zinc-500"
                 }`}
               >
