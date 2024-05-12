@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Avatar from "react-avatar";
 import { FaUserCircle } from "react-icons/fa";
@@ -12,6 +13,9 @@ interface Props {
 }
 
 const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
+  const { data } = useSession();
+  const user = data?.user as SessionType;
+
   const { data: getMessages } = useQuery<MessageType[]>({
     queryKey: ["getMessage", id],
     queryFn: async () => {
@@ -24,6 +28,11 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
 
     refetchInterval: 1000,
   });
+
+  // Filter all messages by sender and receiver id
+  const filteredMessage = getMessages?.filter(
+    (message) => message.senderId === user.id || message.receiverId === user.id
+  );
 
   return (
     <Link href={`/chat/${id}`}>
@@ -54,8 +63,9 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
               3:00 PM
             </span>
           </div>
+
           <div className="flex items-center gap-2">
-            {getMessages && getMessages[0]?.status === 0 && (
+            {filteredMessage && filteredMessage[0]?.status === 0 && (
               <MdMarkChatUnread
                 className="shrink-0 text-violet-600"
                 size={15}
@@ -65,14 +75,14 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
               className={`text-[15px] flex-1 ${
                 receiverId === id ? "text-zinc-200" : "text-zinc-400"
               } ${
-                getMessages &&
-                getMessages[0]?.status === 0 &&
+                filteredMessage &&
+                filteredMessage[0]?.status === 0 &&
                 "font-semibold text-violet-600"
               }`}
             >
-              {getMessages && getMessages.length >= 1
-                ? getMessages
-                  ? getMessages[0]?.message
+              {filteredMessage && filteredMessage.length >= 1
+                ? filteredMessage
+                  ? filteredMessage[0]?.message
                   : "Loading..."
                 : "no message"}
             </p>

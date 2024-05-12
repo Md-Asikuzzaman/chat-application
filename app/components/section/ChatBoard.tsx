@@ -24,21 +24,28 @@ const ChatBoard: NextPage<Props> = ({
   const [previousMessages, setPreviousMessages] = useState<MessageType[]>([]);
   const queryClient = useQueryClient();
 
-  // Fetch messages based on internal times
-  const { data: messages, isLoading } = useQuery<MessageType[]>({
+  // Fetch data based on receiverID and senderID
+  const {
+    data: messages,
+    isLoading,
+    isPending,
+  } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
-      const { data } = await axios.get("/api/messages", {
-        baseURL: process.env.NEXTAUTH_URL,
-      });
-
+      const { data } = await axios.get(
+        `/api/conversations/?senderId=${senderId}&receiverId=${receiverId}`,
+        {
+          baseURL: process.env.NEXTAUTH_URL,
+        }
+      );
       return data.messages;
     },
 
+    enabled: receiverId && senderId ? true : false,
     refetchInterval: 1000,
   });
 
-  // Delete messages
+  // [DELETE] messages
   const { mutate } = useMutation({
     mutationKey: ["delete_message"],
     mutationFn: async (id: string) => {
@@ -108,7 +115,7 @@ const ChatBoard: NextPage<Props> = ({
     }
   }, [inView]);
 
-  // Update message based on InView
+  // [UPDATE] message based on InView
   const { mutate: updateStatus } = useMutation({
     mutationKey: ["update_message"],
     mutationFn: async (id: string) => {
@@ -135,7 +142,7 @@ const ChatBoard: NextPage<Props> = ({
       ref={scrollRef}
     >
       <AnimatePresence mode="popLayout">
-        {filteredMessage?.map((data, i) => (
+        {messages?.map((data, i) => (
           <motion.div
             initial={{
               scale: 0,

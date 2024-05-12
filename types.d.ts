@@ -2,6 +2,7 @@ interface UserType {
   id: string;
   email: string;
   username: string;
+  status: string;
   createdAt: Date;
   updatedAt: Date;
 }

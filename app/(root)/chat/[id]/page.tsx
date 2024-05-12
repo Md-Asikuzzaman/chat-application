@@ -9,6 +9,8 @@ import ChatBoardHeader from "@/app/components/section/ChatBoardHeader";
 import ChatBoard from "@/app/components/section/ChatBoard";
 import ChatBoradForm from "@/app/components/section/ChatBoradForm";
 import LogOutButton from "@/app/components/ui/LogOutButton";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const Page = () => {
   // Get sender id

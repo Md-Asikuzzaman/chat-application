@@ -28,7 +28,7 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
             {isLoading && "Loading..."}
             {user?.username}
           </h4>
-          <p className="text-xs">Last seen 2 min ago</p>
+          <p className="text-xs">hgj</p>
         </div>
       </div>
     </div>

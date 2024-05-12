@@ -28,6 +28,8 @@ export async function POST(
   try {
     const message = await req.json();
 
+    console.log(message);
+
     await prisma.message.create({
       data: message,
     });
