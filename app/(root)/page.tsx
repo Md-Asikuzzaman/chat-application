@@ -4,14 +4,12 @@ import { LuMessagesSquare } from "react-icons/lu";
 import LogOutButton from "../components/ui/LogOutButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 
 export default function Home() {
   const { data } = useSession();
   const user = data?.user as SessionType;
-
-  const [tabCount, setTabCount] = useState<number>(1);
 
   const { mutate } = useMutation({
     mutationKey: ["online_status"],
@@ -32,6 +30,8 @@ export default function Home() {
             status: "offline",
             id: user.id,
           });
+
+          // signOut();
         }
       }
     };
@@ -45,30 +45,6 @@ export default function Home() {
             id: user.id,
           });
         }
-      } else {
-        if (user && user?.id) {
-          mutate({
-            status: "offline",
-            id: user.id,
-          });
-        }
-      }
-    };
-
-    // Tab clone detection [UPDATE]
-    const handleTabCountChange = () => {
-      const currentTabCount =
-        document.visibilityState === "visible"
-          ? document.querySelectorAll("iframe").length + 1
-          : tabCount;
-      if (currentTabCount !== tabCount) {
-        setTabCount(currentTabCount);
-        if (user && user.id) {
-          mutate({
-            status: "offline",
-            id: user.id,
-          });
-        }
       }
     };
 
@@ -76,16 +52,14 @@ export default function Home() {
     window.addEventListener("beforeunload", handleWindowClose);
     window.addEventListener("online", handleOnlineStatusChange);
     window.addEventListener("offline", handleOnlineStatusChange);
-    document.addEventListener("visibilitychange", handleTabCountChange);
 
     // Cleanup function to remove event listeners
     return () => {
       window.removeEventListener("beforeunload", handleWindowClose);
       window.removeEventListener("online", handleOnlineStatusChange);
       window.removeEventListener("offline", handleOnlineStatusChange);
-      document.removeEventListener("visibilitychange", handleTabCountChange);
     };
-  }, [user?.id, tabCount]);
+  }, []);
 
   return (
     <section className="grid place-content-center h-[calc(100vh-85px)] relative">
