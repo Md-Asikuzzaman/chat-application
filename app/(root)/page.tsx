@@ -30,8 +30,7 @@ export default function Home() {
             status: "offline",
             id: user.id,
           });
-
-          // signOut();
+          signOut();
         }
       }
     };
