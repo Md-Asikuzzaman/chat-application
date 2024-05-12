@@ -22,6 +22,15 @@ export default function Home() {
   });
 
   useEffect(() => {
+    // Initial status [UPDATE]
+    if (user && user?.id) {
+      mutate({
+        status: "online",
+        id: user.id,
+      });
+    }
+
+    // Window-close status [UPDATE]
     const handleWindowClose = async () => {
       if (navigator.onLine) {
         if (user && user?.id) {
@@ -32,7 +41,7 @@ export default function Home() {
         }
       }
     };
-
+    // Online-Offline status [UPDATE]
     const handleOnlineStatusChange = async () => {
       if (navigator.onLine) {
         if (user && user?.id) {
@@ -62,16 +71,7 @@ export default function Home() {
       window.removeEventListener("online", handleOnlineStatusChange);
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
-  }, [user]);
-
-  useEffect(() => {
-    if (user && user?.id) {
-      mutate({
-        status: "online",
-        id: user.id,
-      });
-    }
-  }, [user?.id]);
+  }, [user, user?.id]);
 
   return (
     <section className="grid place-content-center h-[calc(100vh-85px)] relative">

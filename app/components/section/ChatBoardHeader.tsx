@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Avatar from "react-avatar";
 
+import moment from "moment";
+
 interface Props {
   receiverId: string;
 }
@@ -28,7 +30,11 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
             {isLoading && "Loading..."}
             {user?.username}
           </h4>
-          <p className="text-xs">hgj</p>
+          <p className="text-xs">
+            {user?.status === "online"
+              ? "Active now"
+              : `Active ${moment(user?.updatedAt).fromNow()}`}
+          </p>
         </div>
       </div>
     </div>
