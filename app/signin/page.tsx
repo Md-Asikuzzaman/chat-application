@@ -2,25 +2,36 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = (e: any) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (email !== "" && password !== "") {
-      signIn("credentials", {
+      setIsLoading(true);
+      await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/",
+        redirect: false,
+      }).then(({ ok, error }: any) => {
+        if (ok) {
+          toast.success("Login successful!!!");
+          router.push("/");
+          router.refresh();
+          setIsLoading(false);
+        } else {
+          toast.error(error);
+          setIsLoading(false);
+        }
       });
-
-      setEmail("");
-      setPassword("");
-    } else {
-      return null;
     }
 
     setEmail("");
@@ -80,7 +91,7 @@ const page = () => {
                 type="submit"
                 className="w-full text-white bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Sign in
+                {isLoading ? "Signing in..." : "Sign in"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don't have an account yet?{" "}
