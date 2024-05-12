@@ -47,9 +47,12 @@ const Friend: NextPage<Props> = ({
       >
         <div className="relative">
           <Avatar name={username} size="35" round={true} />
-          {status === "online" && (
-            <span className="h-[12px] w-[12px] bg-green-600 inline-block shadow-md border-2 border-white rounded-full absolute bottom-0 right-0"></span>
-          )}
+
+          <span
+            className={`h-[12px] w-[12px] inline-block shadow-md border-2 border-white rounded-full absolute bottom-0 right-0 ${
+              status === "online" ? "bg-green-500" : "bg-gray-400"
+            }`}
+          ></span>
         </div>
 
         <div className="flex-1 truncate">
