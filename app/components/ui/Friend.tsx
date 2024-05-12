@@ -4,7 +4,6 @@ import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Avatar from "react-avatar";
-import { FaUserCircle } from "react-icons/fa";
 import { MdMarkChatUnread } from "react-icons/md";
 
 interface Props {
@@ -12,7 +11,10 @@ interface Props {
   receiverId: string;
 }
 
-const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
+const Friend: NextPage<Props> = ({
+  user: { id, username, status },
+  receiverId,
+}) => {
   const { data } = useSession();
   const user = data?.user as SessionType;
 
@@ -43,9 +45,13 @@ const Friend: NextPage<Props> = ({ user: { id, username }, receiverId }) => {
             : "bg-white hover:bg-gray-100"
         }`}
       >
-        <div>
+        <div className="relative">
           <Avatar name={username} size="35" round={true} />
+          {status === "online" && (
+            <span className="h-[12px] w-[12px] bg-green-600 inline-block shadow-md border-2 border-white rounded-full absolute bottom-0 right-0"></span>
+          )}
         </div>
+
         <div className="flex-1 truncate">
           <div className="flex items-center justify-between">
             <h4

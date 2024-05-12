@@ -5,12 +5,34 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 const LogOutButton = () => {
   const [menu, setMenu] = useState(false);
 
   const { data } = useSession();
   const user = data?.user as UserType;
+
+  const { mutate } = useMutation({
+    mutationKey: ["online_status"],
+    mutationFn: async ({ status, id }: { status: string; id: string }) => {
+      const { data } = await axios.post(`/api/online-status/${id}`, {
+        status,
+      });
+      return data;
+    },
+  });
+
+  const handleClick = () => {
+    if (user && user?.id) {
+      mutate({
+        status: "offline",
+        id: user.id,
+      });
+    }
+    signOut();
+  };
 
   return (
     <>
@@ -57,9 +79,7 @@ const LogOutButton = () => {
             </div>
 
             <div
-              onClick={() => {
-                signOut();
-              }}
+              onClick={handleClick}
               className="flex items-center justify-between px-4 py-2 rounded-md cursor-pointer bg-rose-300 hover:bg-rose-400 transition-colors"
             >
               <p>Log out</p>

@@ -23,7 +23,14 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
 
   return (
     <div className="flex items-center gap-5 py-4 relative bg-white px-4">
-      <Avatar name={user?.username} size="35" round={true} />
+      {user?.username && (
+        <div className="relative">
+          <Avatar name={user?.username} size="35" round={true} />
+          {user?.status === "online" && (
+            <span className="h-[14px] w-[14px] bg-green-600 inline-block shadow-md border-2 border-white rounded-full absolute -bottom-[2px] -right-[2px]"></span>
+          )}
+        </div>
+      )}
       <div className="flex-1 flex justify-between">
         <div>
           <h4 className="font-semibold">

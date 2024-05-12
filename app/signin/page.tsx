@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,6 +13,19 @@ const page = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const { data } = useSession();
+  const user = data?.user as UserType;
+
+  const { mutate } = useMutation({
+    mutationKey: ["online_status"],
+    mutationFn: async ({ status, id }: { status: string; id: string }) => {
+      const { data } = await axios.post(`/api/online-status/${id}`, {
+        status,
+      });
+      return data;
+    },
+  });
 
   const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,10 +48,19 @@ const page = () => {
         }
       });
     }
-
     setEmail("");
     setPassword("");
   };
+
+  // [Update] online status
+  useEffect(() => {
+    if (user && user?.id) {
+      mutate({
+        status: "online",
+        id: user.id,
+      });
+    }
+  }, [user]);
 
   return (
     <section className="bg-zinc-200 dark:bg-gray-900">

@@ -23,6 +23,8 @@ const FriendList = () => {
       const { data } = await axios.get("/api/users");
       return data.users;
     },
+
+    refetchInterval: 1000,
   });
 
   // filter all users without loggedin user
