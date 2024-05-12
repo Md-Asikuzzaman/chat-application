@@ -49,8 +49,8 @@ const Friend: NextPage<Props> = ({
           <Avatar name={username} size="35" round={true} />
 
           <span
-            className={`h-[12px] w-[12px] inline-block shadow-md border-2 border-white rounded-full absolute bottom-0 right-0 ${
-              status === "online" ? "bg-green-500" : "bg-gray-400"
+            className={`h-[12px] w-[12px] inline-block shadow-lg border-2 border-white rounded-full absolute bottom-0 right-0 ${
+              status === "online" ? "bg-green-500" : "bg-zinc-400"
             }`}
           ></span>
         </div>
