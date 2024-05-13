@@ -25,11 +25,7 @@ const ChatBoard: NextPage<Props> = ({
   const queryClient = useQueryClient();
 
   // Fetch data based on receiverID and senderID
-  const {
-    data: messages,
-    isLoading,
-    isPending,
-  } = useQuery<MessageType[]>({
+  const { data: messages, isLoading } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -109,6 +105,8 @@ const ChatBoard: NextPage<Props> = ({
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref);
 
+  console.log(inView);
+
   useEffect(() => {
     if (inView) {
       updateStatus(receiverId);
@@ -132,6 +130,31 @@ const ChatBoard: NextPage<Props> = ({
     },
   });
 
+  // check
+
+  const { data: getMessages } = useQuery<MessageType[]>({
+    queryKey: ["getMessage"],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/messages/${receiverId}`, {
+        baseURL: process.env.NEXTAUTH_URL,
+      });
+
+      return data.messages;
+    },
+
+    refetchInterval: 1000,
+
+    enabled: receiverId ? true : false,
+  });
+
+  // Filter all messages by sender and receiver id
+  const filteredMessageForLast = getMessages?.filter(
+    (message) =>
+      message.senderId === senderId ||
+      (message.receiverId === receiverId && message.senderId === receiverId) ||
+      message.receiverId === senderId
+  );
+
   if (isLoading) {
     return <h3 className="px-4">loading...</h3>;
   }
@@ -148,11 +171,13 @@ const ChatBoard: NextPage<Props> = ({
               scale: 0,
               opacity: 0,
               y: 200,
+              visibility: "hidden",
             }}
             animate={{
               scale: 1,
               opacity: 1,
               y: 0,
+              visibility: "visible",
             }}
             transition={{
               ease: "backInOut",
@@ -165,7 +190,11 @@ const ChatBoard: NextPage<Props> = ({
             {/* main chat */}
             <div
               className="flex items-center gap-1 max-w-[90%] group/item"
-              ref={ref}
+              ref={
+                filteredMessageForLast && filteredMessageForLast.length - 1
+                  ? ref
+                  : null
+              }
             >
               <div
                 onClick={() => mutate(data.id && data.id)}

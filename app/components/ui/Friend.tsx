@@ -76,7 +76,7 @@ const Friend: NextPage<Props> = ({
           <div className="flex items-center gap-2">
             {filteredMessage && filteredMessage[0]?.status === 0 && (
               <MdMarkChatUnread
-                className="shrink-0 text-violet-600"
+                className="shrink-0 text-violet-800"
                 size={15}
               />
             )}
