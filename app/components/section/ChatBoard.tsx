@@ -105,7 +105,6 @@ const ChatBoard: NextPage<Props> = ({
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref);
 
-  console.log(inView);
 
   useEffect(() => {
     if (inView) {
@@ -131,7 +130,6 @@ const ChatBoard: NextPage<Props> = ({
   });
 
   // check
-
   const { data: getMessages } = useQuery<MessageType[]>({
     queryKey: ["getMessage"],
     queryFn: async () => {

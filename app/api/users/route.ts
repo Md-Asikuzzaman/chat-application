@@ -26,10 +26,16 @@ export async function POST(
   res: NextResponse
 ): Promise<NextResponse<ApiResponse>> {
   try {
-    const user = await req.json();
+    const { username, email, password } = await req.json();
+
+    console.log(username, email, password);
 
     await prisma.user.create({
-      data: user,
+      data: {
+        username,
+        email,
+        password,
+      },
     });
 
     return NextResponse.json({ message: "user created" }, { status: 201 });

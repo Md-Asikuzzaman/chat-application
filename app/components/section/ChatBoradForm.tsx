@@ -47,8 +47,6 @@ const ChatBoradForm: NextPage<Props> = ({
       queryClient.invalidateQueries({
         queryKey: ["fetch_messages"],
       });
-
-      console.log("ok");
     },
 
     onMutate: async (newMessage: object) => {

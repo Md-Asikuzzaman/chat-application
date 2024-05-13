@@ -1,7 +1,9 @@
-import React from "react";
+import { NextPage } from "next";
 
-const page = () => {
-  return <div>page</div>;
+interface Props {}
+
+const Page: NextPage<Props> = ({}) => {
+  return <div>profile</div>;
 };
 
-export default page;
+export default Page;
