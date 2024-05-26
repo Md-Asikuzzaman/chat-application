@@ -49,12 +49,17 @@ const SignIn = () => {
       }).then(({ ok, error }: any) => {
         if (ok) {
           toast.success("Login successful!!!");
-          router.push("/profile");
+          router.push("/");
           router.refresh();
         } else {
           toast.error(error);
         }
       });
+    },
+
+    onError: (error: any) => {
+      const { response } = error;
+      toast.error(response?.data?.message);
     },
   });
 
