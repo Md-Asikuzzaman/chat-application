@@ -2,7 +2,7 @@
 
 import { LuMessagesSquare } from "react-icons/lu";
 import LogOutButton from "../components/ui/LogOutButton";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
@@ -61,10 +61,10 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="grid place-content-center h-[calc(100vh-85px)] relative">
-      <div className="flex flex-col justify-center items-center">
+    <section className="relative grid h-[calc(100vh-85px)] place-content-center">
+      <div className="flex flex-col items-center justify-center">
         <LuMessagesSquare size={110} className="text-zinc-500" />
-        <h1 className="text-zinc-500 text-2xl">Let's start conversions...</h1>
+        <h1 className="text-2xl text-zinc-500">Let's start conversions...</h1>
       </div>
 
       {/* logout button */}
