@@ -29,17 +29,17 @@ const FriendList = () => {
 
   // filter all users without loggedin user
   const filteredUsers = users?.filter(
-    (filterUser) => filterUser.id !== user?.id
+    (filterUser) => filterUser.id !== user?.id,
   );
 
   return (
-    <div className="w-[275px] sm:w-[300px] md:w-[375px] lg:w-[475px] bg-slate-300">
-      <h3 className="text-2xl text-black font-semibold mb-1 px-4 py-3 flex items-center gap-3">
+    <div className="min-w-[360px] bg-slate-300 lg:min-w-[400px]">
+      <h3 className="mb-1 flex items-center gap-3 px-4 py-3 text-2xl font-semibold text-black">
         <Avatar name={user?.username} size="35" round={true} />
         Friends List
       </h3>
-      <div className="h-[calc(100vh-100px)]">
-        <div className="flex flex-col gap-3 overflow-y-scroll h-full px-4 pb-4">
+      <div className="h-[calc(100vh-70px)]">
+        <div className="flex h-full flex-col gap-3 overflow-y-scroll px-4 pb-4">
           {/* chats */}
           {isLoading
             ? [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => <FriendSkeleton key={i} />)

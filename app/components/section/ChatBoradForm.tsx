@@ -91,8 +91,8 @@ const ChatBoradForm: NextPage<Props> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="absolute w-full bottom-5 px-4">
-      <div className="flex bg-white py-2 px-4 items-center gap-3 rounded-full">
+    <form onSubmit={handleSubmit} className="absolute bottom-5 w-full px-4">
+      <div className="flex items-center gap-3 rounded-full bg-white px-4 py-2">
         <TiAttachment className="shrink-0" size={30} />
         <input
           className="flex-1 py-3 outline-none outline-0"
@@ -112,7 +112,7 @@ const ChatBoradForm: NextPage<Props> = ({
         {/* Emoji send button */}
         <div
           onClick={() => setEmojiPlate((prev) => !prev)}
-          className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 flex items-center justify-center rounded-full cursor-pointer transition-all"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-all hover:bg-violet-200"
         >
           {!emojiPlate ? (
             <MdEmojiEmotions className="shrink-0 text-violet-700" size={24} />
@@ -144,7 +144,7 @@ const ChatBoradForm: NextPage<Props> = ({
                 ease: "backIn",
               }}
               onClick={handleSubmit}
-              className="h-10 w-10 bg-zinc-200 hover:bg-violet-200 transition-colors flex items-center justify-center rounded-full cursor-pointer "
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-colors hover:bg-violet-200"
             >
               <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
             </motion.div>

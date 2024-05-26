@@ -60,9 +60,9 @@ const SignIn = () => {
 
   return (
     <section className="bg-zinc-200 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+        <div className="w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
+          <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create a new account
             </h1>
@@ -74,7 +74,7 @@ const SignIn = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Username
                 </label>
@@ -82,7 +82,7 @@ const SignIn = () => {
                   type="text"
                   name="username"
                   id="username"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-violet-600 block w-full p-2.5"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-violet-600 sm:text-sm"
                   placeholder="Md Rahman"
                   required
                   value={username}
@@ -92,7 +92,7 @@ const SignIn = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
                 </label>
@@ -100,7 +100,7 @@ const SignIn = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-violet-600 block w-full p-2.5"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-violet-600 sm:text-sm"
                   placeholder="example@gmail.com"
                   required
                   value={email}
@@ -110,7 +110,7 @@ const SignIn = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
@@ -119,7 +119,7 @@ const SignIn = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-violet-600 block w-full p-2.5"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:outline-violet-600 sm:text-sm"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -127,14 +127,14 @@ const SignIn = () => {
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-violet-600 hover:bg-violet-700 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full rounded-lg bg-violet-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300"
               >
-                {isPending ? "Signing in..." : "Sign in"}
+                {isPending ? "Signing up..." : "Sign up"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <Link href={"/signin"}>
-                  <span className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                  <span className="text-primary-600 dark:text-primary-500 font-medium hover:underline">
                     Sign In
                   </span>
                 </Link>
