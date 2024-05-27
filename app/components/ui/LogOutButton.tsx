@@ -40,7 +40,7 @@ const LogOutButton = () => {
         onClick={(e) => {
           setMenu((prev) => !prev);
         }}
-        className="absolute right-0 top-0  flex h-9 w-9 -translate-x-4 translate-y-4 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
+        className="absolute right-0 top-0  flex h-10 w-10 -translate-x-4 translate-y-4 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
       >
         <BsThreeDots size={20} />
       </div>

@@ -6,8 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
-import { CgMenuRight } from "react-icons/cg";
-import { useFriendListActive } from "@/lib/store";
+import FriendListMenu from "../components/ui/FriendListMenu";
 
 export default function Home() {
   const { data } = useSession();
@@ -62,8 +61,6 @@ export default function Home() {
     };
   }, []);
 
-  const { friendListActive, setFriendListActive } = useFriendListActive();
-
   return (
     <section className="relative grid h-[calc(100vh-85px)] place-content-center">
       <div className="flex flex-col items-center justify-center">
@@ -71,14 +68,8 @@ export default function Home() {
         <h1 className="text-2xl text-zinc-500">Let's start conversions...</h1>
       </div>
 
-      {/* Friend list  */}
-
-      <div
-        onClick={() => setFriendListActive()}
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all hover:bg-zinc-200 lg:hidden"
-      >
-        <CgMenuRight size={20} />
-      </div>
+      {/* Friend list menu  */}
+      <FriendListMenu />
 
       {/* logout button */}
       <LogOutButton />
