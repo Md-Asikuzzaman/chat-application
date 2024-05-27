@@ -18,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body suppressHydrationWarning={true} className={`${inter.className} overflow-hidden`}>
+      <body
+        suppressHydrationWarning={true}
+        className={`${inter.className} min-h-screen overflow-hidden`}
+      >
         <NextAuthProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </NextAuthProvider>
