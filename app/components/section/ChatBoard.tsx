@@ -154,7 +154,7 @@ const ChatBoard: NextPage<Props> = ({
   );
 
   if (isLoading) {
-    return <h3 className="px-4">loading...</h3>;
+    return <h3 className="h-[calc(100vh-160px)] px-4">loading...</h3>;
   }
 
   return (
