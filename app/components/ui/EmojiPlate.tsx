@@ -30,221 +30,221 @@ const EmojiPlate: NextPage<Props> = ({ setMessage, emojiPlate }) => {
           transition={{
             ease: "backInOut",
           }}
-          className="grid grid-cols-12 gap-1 absolute bg-white p-3 rounded-xl shadow-lg top-0 right-12 z-50"
+          className="absolute right-5 z-50 grid grid-cols-8  gap-1 rounded-xl bg-white p-3 shadow-lg sm:right-10 sm:top-0 sm:grid-cols-12"
         >
           <span
             onClick={() => handleEmoji("👋")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👋
           </span>
           <span
             onClick={() => handleEmoji("😆")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😆
           </span>
           <span
             onClick={() => handleEmoji("😁")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😁
           </span>
           <span
             onClick={() => handleEmoji("🤣")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤣
           </span>
           <span
             onClick={() => handleEmoji("😅")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😅
           </span>
           <span
             onClick={() => handleEmoji("🥰")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🥰
           </span>
           <span
             onClick={() => handleEmoji("😍")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😍
           </span>
           <span
             onClick={() => handleEmoji("😵")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😵
           </span>
           <span
             onClick={() => handleEmoji("🤔")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤔
           </span>
           <span
             onClick={() => handleEmoji("🤭")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤭
           </span>
           <span
             onClick={() => handleEmoji("🤐")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤐
           </span>
           <span
             onClick={() => handleEmoji("🥴")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🥴
           </span>
           <span
             onClick={() => handleEmoji("🤧")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤧
           </span>
           <span
             onClick={() => handleEmoji("🤒")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤒
           </span>
           <span
             onClick={() => handleEmoji("🤥")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤥
           </span>
           <span
             onClick={() => handleEmoji("🥵")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🥵
           </span>
           <span
             onClick={() => handleEmoji("🤯")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤯
           </span>
           <span
             onClick={() => handleEmoji("🤪")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤪
           </span>
           <span
             onClick={() => handleEmoji("😜")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😜
           </span>
           <span
             onClick={() => handleEmoji("😎")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             😎
           </span>
           <span
             onClick={() => handleEmoji("🤓")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤓
           </span>
           <span
             onClick={() => handleEmoji("🧐")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🧐
           </span>
           <span
             onClick={() => handleEmoji("🥳")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🥳
           </span>
           <span
             onClick={() => handleEmoji("🤔")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤔
           </span>
           <span
             onClick={() => handleEmoji("🤫")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤫
           </span>
           <span
             onClick={() => handleEmoji("🤑")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤑
           </span>
           <span
             onClick={() => handleEmoji("🤕")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤕
           </span>
           <span
             onClick={() => handleEmoji("👍")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👍
           </span>
           <span
             onClick={() => handleEmoji("👊")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👊
           </span>
           <span
             onClick={() => handleEmoji("👆")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👆
           </span>
           <span
             onClick={() => handleEmoji("👇")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👇
           </span>
           <span
             onClick={() => handleEmoji("👉")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👉
           </span>
           <span
             onClick={() => handleEmoji("👈")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             👈
           </span>
           <span
             onClick={() => handleEmoji("🖤")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🖤
           </span>
           <span
             onClick={() => handleEmoji("🤍")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🤍
           </span>
           <span
             onClick={() => handleEmoji("🧡")}
-            className="cursor-pointer text-2xl select-none"
+            className="cursor-pointer select-none text-2xl"
           >
             🧡
           </span>

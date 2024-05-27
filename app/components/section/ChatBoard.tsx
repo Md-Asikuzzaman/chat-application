@@ -7,6 +7,7 @@ import { LegacyRef, useEffect, useRef, useState } from "react";
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { MdDelete } from "react-icons/md";
+import clsx from "clsx";
 
 interface Props {
   senderId: string;
@@ -32,7 +33,7 @@ const ChatBoard: NextPage<Props> = ({
         `/api/conversations/?senderId=${senderId}&receiverId=${receiverId}`,
         {
           baseURL: process.env.NEXTAUTH_URL,
-        }
+        },
       );
       return data.messages;
     },
@@ -98,13 +99,12 @@ const ChatBoard: NextPage<Props> = ({
   const filteredMessage = messages?.filter(
     (message) =>
       (message.senderId === senderId && message.receiverId === receiverId) ||
-      (message.receiverId === senderId && message.senderId === receiverId)
+      (message.receiverId === senderId && message.senderId === receiverId),
   );
 
   // Check chat Inview
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref);
-
 
   useEffect(() => {
     if (inView) {
@@ -150,7 +150,7 @@ const ChatBoard: NextPage<Props> = ({
     (message) =>
       message.senderId === senderId ||
       (message.receiverId === receiverId && message.senderId === receiverId) ||
-      message.receiverId === senderId
+      message.receiverId === senderId,
   );
 
   if (isLoading) {
@@ -159,7 +159,7 @@ const ChatBoard: NextPage<Props> = ({
 
   return (
     <div
-      className="flex flex-col gap-3 h-[calc(100vh-210px)] overflow-y-scroll overflow-x-hidden px-5 py-2"
+      className="flex h-[calc(100vh-170px)] flex-col gap-3 overflow-x-hidden overflow-y-scroll px-5 py-2"
       ref={scrollRef}
     >
       <AnimatePresence mode="popLayout">
@@ -187,7 +187,7 @@ const ChatBoard: NextPage<Props> = ({
           >
             {/* main chat */}
             <div
-              className="flex items-center gap-1 max-w-[90%] group/item"
+              className="group/item flex max-w-[90%] items-center gap-1"
               ref={
                 filteredMessageForLast && filteredMessageForLast.length - 1
                   ? ref
@@ -196,16 +196,19 @@ const ChatBoard: NextPage<Props> = ({
             >
               <div
                 onClick={() => mutate(data.id && data.id)}
-                className={`h-6 w-6 bg-zinc-300 grid place-content-center rounded-full cursor-pointer translate-x-10 group-hover/item:translate-x-0 shrink-0 transition-transform ${
+                className={`grid h-6 w-6 shrink-0 translate-x-10 cursor-pointer place-content-center rounded-full bg-zinc-300 transition-transform group-hover/item:translate-x-0 ${
                   senderId === data.senderId ? "grid" : "hidden"
                 }`}
               >
                 <MdDelete className="text-zinc-500" />
               </div>
               <p
-                className={`inline-block py-3 px-4 rounded-xl text-white z-20 selection:text-green-600 selection:bg-slate-900 ${
-                  senderId === data.senderId ? "bg-violet-500" : "bg-zinc-500"
-                }`}
+                className={clsx(
+                  "z-20 inline-block px-4 py-3  selection:bg-slate-900 selection:text-green-600",
+                  senderId === data.senderId
+                    ? "rounded-b-2xl rounded-s-2xl bg-[#6918b4] text-white"
+                    : "rounded-b-2xl rounded-e-2xl bg-[#E1D1F0] text-[#8318b4]",
+                )}
               >
                 {data.message}
               </p>

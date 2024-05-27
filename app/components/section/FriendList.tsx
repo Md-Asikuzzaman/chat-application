@@ -8,6 +8,10 @@ import Avatar from "react-avatar";
 
 import Friend from "../ui/Friend";
 import FriendSkeleton from "../ui/FriendSkeleton";
+import clsx from "clsx";
+
+import { IoClose } from "react-icons/io5";
+import { useFriendListActive } from "@/lib/store";
 
 const FriendList = () => {
   const params = useParams();
@@ -32,13 +36,30 @@ const FriendList = () => {
     (filterUser) => filterUser.id !== user?.id,
   );
 
+  const { friendListActive, setFriendListActive } = useFriendListActive();
+
   return (
-    <div className="min-w-[360px] bg-slate-300 lg:min-w-[400px]">
+    <div
+      className={clsx(
+        "hiddedn absolute left-0 top-0 z-50 min-w-[320px] bg-white shadow-lg transition-transform lg:relative lg:min-w-[400px] lg:shadow-none",
+        friendListActive
+          ? "-translate-x-[110%] lg:translate-x-0"
+          : "translate-x-0",
+      )}
+    >
       <h3 className="mb-1 flex items-center gap-3 px-4 py-3 text-2xl font-semibold text-black">
         <Avatar name={user?.username} size="35" round={true} />
         Friends List
       </h3>
-      <div className="h-[calc(100vh-70px)]">
+      <div className="relative h-[calc(100vh-60px)]">
+        {/* close button*/}
+        <div
+          onClick={() => setFriendListActive()}
+          className="absolute right-0 flex h-10 w-10 translate-x-1/2 translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white shadow-lg transition-all hover:bg-rose-200 lg:hidden"
+        >
+          <IoClose size={20} />
+        </div>
+
         <div className="flex h-full flex-col gap-3 overflow-y-scroll px-4 pb-4">
           {/* chats */}
           {isLoading

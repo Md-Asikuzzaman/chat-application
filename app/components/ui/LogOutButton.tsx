@@ -40,7 +40,7 @@ const LogOutButton = () => {
         onClick={(e) => {
           setMenu((prev) => !prev);
         }}
-        className="h-9 w-9 bg-zinc-300 hover:bg-violet-300 transition-colors rounded-full flex items-center justify-center cursor-pointer absolute top-0 right-0 translate-y-4 -translate-x-4"
+        className="absolute right-0 top-0  flex h-9 w-9 -translate-x-4 translate-y-4 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
       >
         <BsThreeDots size={20} />
       </div>
@@ -69,21 +69,23 @@ const LogOutButton = () => {
             transition={{
               ease: "backInOut",
             }}
-            className="w-[230px] bg-zinc-300 absolute right-4 top-0 rounded-lg shadow-lg p-4 overflow-hidden z-50"
+            className="absolute right-4 top-0 z-50 w-[230px] overflow-hidden rounded-lg bg-[#E1D1F0] p-4 shadow-lg"
           >
-            <div className="flex items-center gap-3 border-b border-violet-300 pb-3 mb-3">
+            <div className="mb-3 flex items-center gap-3 border-b border-[#8318b4] pb-3">
               <Avatar name={user.username} size="30" round={true} />
               <div>
-                <h3>{user.username ? user.username : "Loading..."}</h3>
+                <h3 className="text-[#8318b4]">
+                  {user.username ? user.username : "Loading..."}
+                </h3>
               </div>
             </div>
 
             <div
               onClick={handleClick}
-              className="flex items-center justify-between px-4 py-2 rounded-md cursor-pointer bg-rose-300 hover:bg-rose-400 transition-colors"
+              className="flex cursor-pointer items-center gap-3 rounded-md px-4 py-2 text-sm transition-colors hover:bg-rose-400"
             >
-              <p>Log out</p>
               <AiOutlineLogout size={20} />
+              <p className="text-[#8318b4]">Log out</p>
             </div>
           </motion.div>
         )}

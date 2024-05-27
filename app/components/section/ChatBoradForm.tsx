@@ -91,36 +91,34 @@ const ChatBoradForm: NextPage<Props> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="absolute bottom-5 w-full px-4">
-      <div className="flex items-center gap-3 rounded-full bg-white px-4 py-2">
-        <TiAttachment className="shrink-0" size={30} />
-        <input
-          className="flex-1 py-3 outline-none outline-0"
-          type="text"
-          placeholder="Type a message here..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-        />
-        <button type="submit" hidden className="hidden">
-          send
-        </button>
+    <form onSubmit={handleSubmit} className="absolute bottom-0 left-0 w-full">
+      <div className="relative flex flex-1 items-center gap-2 p-2">
+        <div className="relative flex flex-1 items-center gap-3 rounded-full bg-white px-4 py-2">
+          <TiAttachment className="shrink-0" size={30} />
+          <input
+            className="w-full py-3 outline-none outline-0"
+            type="text"
+            placeholder="Type a message here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+          />
+          <button type="submit" hidden className="hidden">
+            send
+          </button>
 
-        {/* Emoji plate */}
-        <EmojiPlate setMessage={setMessage} emojiPlate={emojiPlate} />
-
-        {/* Emoji send button */}
-        <div
-          onClick={() => setEmojiPlate((prev) => !prev)}
-          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-all hover:bg-violet-200"
-        >
-          {!emojiPlate ? (
-            <MdEmojiEmotions className="shrink-0 text-violet-700" size={24} />
-          ) : (
-            <MdClose className="shrink-0 text-violet-700" size={24} />
-          )}
+          {/* Emoji send button */}
+          <div
+            onClick={() => setEmojiPlate((prev) => !prev)}
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-all hover:bg-violet-200"
+          >
+            {!emojiPlate ? (
+              <MdEmojiEmotions className="shrink-0 text-violet-700" size={24} />
+            ) : (
+              <MdClose className="shrink-0 text-violet-700" size={24} />
+            )}
+          </div>
         </div>
-
         {/* Mesasge send button */}
         <AnimatePresence mode="wait">
           {message.length > 0 && (
@@ -144,12 +142,15 @@ const ChatBoradForm: NextPage<Props> = ({
                 ease: "backIn",
               }}
               onClick={handleSubmit}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-colors hover:bg-violet-200"
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-zinc-200 transition-colors hover:bg-violet-200"
             >
               <BsFillSendFill className="shrink-0 text-violet-700" size={22} />
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Emoji plate */}
+        <EmojiPlate setMessage={setMessage} emojiPlate={emojiPlate} />
       </div>
     </form>
   );

@@ -1,5 +1,7 @@
+import { useFriendListActive } from "@/lib/store";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import clsx from "clsx";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -33,61 +35,47 @@ const Friend: NextPage<Props> = ({
 
   // Filter all messages by sender and receiver id
   const filteredMessage = getMessages?.filter(
-    (message) => message.senderId === user.id || message.receiverId === user.id
+    (message) => message.senderId === user.id || message.receiverId === user.id,
   );
 
+  const { setFriendListActive } = useFriendListActive();
+
   return (
-    <Link href={`/chat/${id}`}>
+    <Link onClick={() => setFriendListActive()} href={`/chat/${id}`}>
       <div
-        className={`p-4 rounded-xl flex justify-between items-center gap-4 ${
-          receiverId === id
-            ? "bg-violet-500 hover:bg-violet-600"
-            : "bg-white hover:bg-gray-100"
-        }`}
+        className={clsx(
+          "flex items-center justify-between gap-4 rounded-xl  p-4 hover:bg-[#E1D1F0]",
+          receiverId === id ? "bg-[#E1D1F0]" : "bg-zinc-100",
+        )}
       >
         <div className="relative">
           <Avatar name={username} size="35" round={true} />
 
           <span
-            className={`h-[12px] w-[12px] inline-block shadow-lg border-2 border-white rounded-full absolute bottom-0 right-0 ${
-              status === "online" ? "bg-green-500" : "bg-zinc-400"
-            }`}
+            className={clsx(
+              "absolute bottom-0 right-0 inline-block h-[12px] w-[12px] rounded-full border-2 border-white shadow-lg",
+              status === "online" ? "bg-green-500" : "bg-zinc-400",
+            )}
           ></span>
         </div>
 
         <div className="flex-1 truncate">
           <div className="flex items-center justify-between">
-            <h4
-              className={`font-semibold ${
-                receiverId === id ? "text-white " : "text-black"
-              }`}
-            >
-              {username}
-            </h4>
-            <span
-              className={`text-xs ${
-                receiverId === id ? "text-gray-300" : "text-black"
-              }`}
-            >
-              3:00 PM
-            </span>
+            <h4 className={`font-semibold text-[#8318b4]`}>{username}</h4>
+            <span className={`text-xs text-[#8318b4]/70`}>3:00 PM</span>
           </div>
 
           <div className="flex items-center gap-2">
             {filteredMessage && filteredMessage[0]?.status === 0 && (
-              <MdMarkChatUnread
-                className="shrink-0 text-violet-800"
-                size={15}
-              />
+              <MdMarkChatUnread className="shrink-0 text-[#8318b4]" size={15} />
             )}
             <p
-              className={`text-[15px] flex-1 ${
-                receiverId === id ? "text-zinc-200" : "text-zinc-400"
-              } ${
+              className={clsx(
+                "text-15px] flex-1 text-[#8318b4]/70",
                 filteredMessage &&
-                filteredMessage[0]?.status === 0 &&
-                "font-semibold text-violet-600"
-              }`}
+                  filteredMessage[0]?.status === 0 &&
+                  "font-semibold text-[#8318b4]",
+              )}
             >
               {filteredMessage && filteredMessage.length >= 1
                 ? filteredMessage

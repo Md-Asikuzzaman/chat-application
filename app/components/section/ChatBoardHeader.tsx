@@ -3,7 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Avatar from "react-avatar";
 
+import { CgMenuRight } from "react-icons/cg";
+
 import moment from "moment";
+import { useFriendListActive } from "@/lib/store";
 
 interface Props {
   receiverId: string;
@@ -21,19 +24,29 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
     enabled: receiverId ? true : false,
   });
 
+  const { friendListActive, setFriendListActive } = useFriendListActive();
+
+  console.log(friendListActive);
+
   return (
-    <div className="flex items-center gap-5 py-4 relative bg-white px-4">
+    <div className="relative flex items-center gap-5 bg-white px-4 py-4">
+      <div
+        onClick={() => setFriendListActive()}
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all hover:bg-zinc-200 lg:hidden"
+      >
+        <CgMenuRight size={20} />
+      </div>
       {user?.username && (
         <div className="relative">
           <Avatar name={user.username} size="35" round={true} />
           <span
-            className={`h-[14px] w-[14px] inline-block shadow-lg border-2 border-white rounded-full absolute -bottom-[2px] -right-[2px]  ${
+            className={`absolute -bottom-[2px] -right-[2px] inline-block h-[14px] w-[14px] rounded-full border-2 border-white shadow-lg  ${
               user.status === "online" ? "bg-green-500" : "bg-zinc-400"
             }`}
           ></span>
         </div>
       )}
-      <div className="flex-1 flex justify-between">
+      <div className="flex flex-1 justify-between">
         <div>
           <h4 className="font-semibold">
             {isLoading && "Loading..."}

@@ -8,7 +8,7 @@ interface ApiResponse {
 
 export async function GET(
   req: NextRequest,
-  res: NextResponse
+  res: NextResponse,
 ): Promise<NextResponse<ApiResponse>> {
   const searchParams = req.nextUrl.searchParams;
   const senderId = searchParams.get("senderId") as string;
@@ -30,7 +30,7 @@ export async function GET(
         {
           message: "someting went wrong!",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
   } catch (error) {
@@ -38,7 +38,7 @@ export async function GET(
       {
         message: "someting went wrong!",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
