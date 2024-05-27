@@ -91,7 +91,10 @@ const ChatBoradForm: NextPage<Props> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="fixed bottom-0 left-0 w-full">
+    <form
+      onSubmit={handleSubmit}
+      className="absolute bottom-0 left-0 z-[999999] w-full"
+    >
       <div className="relative flex flex-1 items-center gap-2 p-3">
         <div className="relative flex flex-1 items-center gap-3 rounded-full bg-white px-4 py-2">
           <TiAttachment className="shrink-0" size={30} />
