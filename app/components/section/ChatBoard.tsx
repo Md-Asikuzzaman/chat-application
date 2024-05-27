@@ -159,7 +159,7 @@ const ChatBoard: NextPage<Props> = ({
 
   return (
     <div
-      className="flex h-[calc(100vh-170px)] flex-col gap-3 overflow-x-hidden overflow-y-scroll px-5 py-2"
+      className="flex h-[calc(100vh-160px)] flex-col overflow-x-hidden overflow-y-scroll px-5 py-2"
       ref={scrollRef}
     >
       <AnimatePresence mode="popLayout">
