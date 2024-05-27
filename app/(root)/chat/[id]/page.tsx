@@ -34,7 +34,7 @@ const Page = () => {
   };
 
   return (
-    <div className="relative flex h-[100vh] flex-1 flex-col">
+    <div className="flex-1 flex flex-col h-full relative">
       {/* chat board header */}
       <ChatBoardHeader receiverId={receiverId} />
 
