@@ -3,7 +3,7 @@ import Avatar from "react-avatar";
 import { AiOutlineLogout } from "react-icons/ai";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -34,12 +34,26 @@ const LogOutButton = () => {
     signOut();
   };
 
+  const handlePropagate = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setMenu((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const removeMenu = () => {
+      setMenu(false);
+    };
+    window.addEventListener("click", removeMenu);
+
+    return () => {
+      window.removeEventListener("click", removeMenu);
+    };
+  }, []);
+
   return (
     <>
       <div
-        onClick={(e) => {
-          setMenu((prev) => !prev);
-        }}
+        onClick={handlePropagate}
         className="absolute right-0 top-0  flex h-10 w-10 -translate-x-4 translate-y-4 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
       >
         <BsThreeDots size={20} />
@@ -51,7 +65,6 @@ const LogOutButton = () => {
           <motion.div
             initial={{
               opacity: 0,
-
               y: 0,
               x: 200,
             }}
@@ -69,6 +82,7 @@ const LogOutButton = () => {
             transition={{
               ease: "backInOut",
             }}
+            onClick={handlePropagate}
             className="absolute right-4 top-0 z-50 w-[230px] overflow-hidden rounded-lg bg-[#E1D1F0] p-4 shadow-lg"
           >
             <div className="mb-3 flex items-center gap-3 border-b border-[#8318b4] pb-3">
