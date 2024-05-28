@@ -16,14 +16,14 @@ export async function GET(): Promise<NextResponse<ApiResponse>> {
       {
         message: "someting went wrong!",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(
   req: NextRequest,
-  res: NextResponse
+  res: NextResponse,
 ): Promise<NextResponse<ApiResponse>> {
   try {
     const message = await req.json();
@@ -40,7 +40,7 @@ export async function POST(
       {
         message: "someting went wrong!",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

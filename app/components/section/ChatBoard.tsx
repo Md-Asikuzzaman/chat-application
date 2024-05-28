@@ -202,16 +202,30 @@ const ChatBoard: NextPage<Props> = ({
               >
                 <MdDelete className="text-zinc-500" />
               </div>
-              <p
-                className={clsx(
-                  "z-20 inline-block px-4 py-3  selection:bg-slate-900 selection:text-green-600",
-                  senderId === data.senderId
-                    ? "rounded-b-2xl rounded-s-2xl bg-[#6918b4] text-white"
-                    : "rounded-b-2xl rounded-e-2xl bg-[#E1D1F0] text-[#8318b4]",
-                )}
-              >
-                {data.message}
-              </p>
+              {data.type === "text" && (
+                <div
+                  className={clsx(
+                    "z-20 inline-block px-4 py-3",
+                    senderId === data.senderId
+                      ? "rounded-b-2xl rounded-s-2xl bg-[#6918b4] text-white"
+                      : "rounded-b-2xl rounded-e-2xl bg-[#E1D1F0] text-[#8318b4]",
+                  )}
+                >
+                  <p>{data.message}</p>
+                </div>
+              )}
+              {data.type === "file" && (
+                <div
+                  className={clsx(
+                    "z-20 inline-block overflow-hidden",
+                    senderId === data.senderId
+                      ? "rounded-b-xl rounded-s-xl"
+                      : "rounded-b-xl rounded-e-xl",
+                  )}
+                >
+                  <img src={data.message} height={200} width={200} />
+                </div>
+              )}
             </div>
           </motion.div>
         ))}

@@ -23,6 +23,7 @@ model Message {
   senderId   String   @db.ObjectId
   receiverId String   @db.ObjectId
   status     Int      @default(0)
+  type       String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

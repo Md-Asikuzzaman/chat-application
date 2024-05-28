@@ -77,11 +77,24 @@ const Friend: NextPage<Props> = ({
                   "font-semibold text-[#8318b4]",
               )}
             >
-              {filteredMessage && filteredMessage.length >= 1
-                ? filteredMessage
-                  ? filteredMessage[0]?.message
-                  : "Loading..."
-                : "no message"}
+              {filteredMessage && filteredMessage[0]?.type === "text" && (
+                <span className={`text-sm text-[#8318b4]/70`}>
+                  {filteredMessage[0]?.message.length > 30
+                    ? filteredMessage[0]?.message.slice(0, 30) + " ..."
+                    : filteredMessage[0]?.message}
+                </span>
+              )}
+
+              {filteredMessage && filteredMessage[0]?.type === "file" && (
+                <span className={`text-sm text-[#8318b4]/70`}>Send a file</span>
+              )}
+
+              {!filteredMessage ||
+                (filteredMessage?.length == 0 && (
+                  <span className={`text-sm text-[#8318b4]/70`}>
+                    No Message
+                  </span>
+                ))}
             </p>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 import { BsFillSendFill } from "react-icons/bs";
 import { MdClose, MdEmojiEmotions } from "react-icons/md";
-import { TiAttachment } from "react-icons/ti";
+import { IoIosSend, IoMdSend } from "react-icons/io";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,6 +12,12 @@ import { useEffect, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import EmojiPlate from "../ui/EmojiPlate";
+
+import { FaRegImage } from "react-icons/fa6";
+
+import { _64ify } from "next-file-64ify";
+import { IoSendSharp } from "react-icons/io5";
+import clsx from "clsx";
 
 interface Props {
   senderId: string;
@@ -77,24 +83,67 @@ const ChatBoradForm: NextPage<Props> = ({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
     if (message) {
       mutate({
         message,
         senderId,
         receiverId,
+        type: "text",
       });
     }
-
     setMessage("");
     setEmojiPlate(false);
+  };
+
+  const [myFile, setMyFile] = useState<string>("");
+  const [fileModal, setFileModal] = useState<boolean>(false);
+
+  const allowedTypes = ["image/jpeg", "image/png"];
+  const allowedFileSize = { minSize: 0, maxSize: 1024 };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (file) {
+      const { data, isLoading, isError, isValidSize } = await _64ify(
+        file,
+        allowedTypes,
+        allowedFileSize,
+      );
+
+      data && setMyFile(data);
+      setFileModal(true);
+    }
+  };
+
+  // file upload
+  const handleFileUpload = () => {
+    myFile &&
+      mutate({
+        message: myFile,
+        senderId,
+        receiverId,
+        type: "file",
+      });
+
+    setFileModal(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="absolute bottom-2 left-0 right-0">
       <div className="relative flex flex-1 items-center gap-2 p-3">
         <div className="relative flex flex-1 items-center gap-3 rounded-full bg-white px-4 py-2">
-          <TiAttachment className="shrink-0" size={30} />
+          <label>
+            <div className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200">
+              <FaRegImage className="shrink-0 text-violet-700" size={22} />
+            </div>
+            <input
+              hidden
+              type="file"
+              accept="image/jpeg, image/png"
+              onChange={handleFileChange}
+            />
+          </label>
           <input
             className="w-full py-3 outline-none outline-0"
             type="text"
@@ -106,7 +155,6 @@ const ChatBoradForm: NextPage<Props> = ({
           <button type="submit" hidden className="hidden">
             send
           </button>
-
           {/* Emoji send button */}
           <div
             onClick={() => setEmojiPlate((prev) => !prev)}
@@ -151,6 +199,31 @@ const ChatBoradForm: NextPage<Props> = ({
 
         {/* Emoji plate */}
         <EmojiPlate setMessage={setMessage} emojiPlate={emojiPlate} />
+
+        {/* file modal */}
+        <div
+          className={clsx(
+            "absolute bottom-0 right-0 z-[999999]  h-auto w-[300px] -translate-x-[50px] -translate-y-[100px] rounded-lg bg-white px-4 pt-4 shadow-xl",
+            fileModal ? "block" : "hidden",
+          )}
+        >
+          <img src={myFile} alt="file" className="h-full w-full" />
+          <div className="flex flex-row-reverse items-center gap-2 py-2">
+            <div
+              onClick={handleFileUpload}
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
+            >
+              <IoMdSend size={18} />
+            </div>
+
+            <div
+              onClick={() => setFileModal(false)}
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
+            >
+              <MdClose size={20} />
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   );

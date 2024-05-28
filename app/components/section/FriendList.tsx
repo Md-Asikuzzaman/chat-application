@@ -41,7 +41,7 @@ const FriendList = () => {
   return (
     <div
       className={clsx(
-        "hiddedn absolute left-0 top-0 z-50 min-w-[320px] bg-white shadow-lg transition-transform lg:relative lg:min-w-[400px] lg:shadow-none",
+        "hiddedn 0 absolute left-0 top-0 z-[9999999] w-[280px] bg-white shadow-lg transition-transform sm:w-[400px] lg:relative lg:shadow-none",
         friendListActive
           ? "-translate-x-[110%] lg:translate-x-0"
           : "translate-x-0",
