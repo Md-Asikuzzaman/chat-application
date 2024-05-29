@@ -9,7 +9,6 @@ import { IoMdSend } from "react-icons/io";
 import { MdClose, MdEmojiEmotions } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
 import { _64ify } from "next-file-64ify";
-
 import axios from "axios";
 import clsx from "clsx";
 
@@ -120,6 +119,7 @@ const ChatBoradForm: NextPage<Props> = ({
       });
 
     setFileModal(false);
+    setMyFile("");
   };
 
   return (
@@ -210,7 +210,10 @@ const ChatBoradForm: NextPage<Props> = ({
             </div>
 
             <div
-              onClick={() => setFileModal(false)}
+              onClick={() => {
+                setFileModal(false);
+                setMyFile("");
+              }}
               className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-200"
             >
               <MdClose size={20} />

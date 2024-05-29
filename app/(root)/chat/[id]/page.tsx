@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
@@ -31,8 +31,6 @@ const Page = () => {
       });
     }
   };
-
-
 
   return (
     <div className="relative flex h-full flex-1 flex-col">
