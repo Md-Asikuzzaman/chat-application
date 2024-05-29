@@ -145,7 +145,7 @@ const ChatBoard: NextPage<Props> = ({
       className="bg-red flex h-[calc(100vh-160px)] flex-col overflow-x-hidden overflow-y-scroll px-5 py-2"
       ref={scrollRef}
     >
-      <div className="flex h-[calc(100vh-160px)] flex-col justify-end gap-2">
+      <div className="flex flex-col justify-end gap-2">
         <AnimatePresence mode="popLayout">
           {messages?.map((data, i) => (
             <motion.div
