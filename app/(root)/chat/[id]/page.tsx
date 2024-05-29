@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
@@ -8,7 +8,6 @@ import { useParams } from "next/navigation";
 import ChatBoardHeader from "@/app/components/section/ChatBoardHeader";
 import ChatBoard from "@/app/components/section/ChatBoard";
 import ChatBoradForm from "@/app/components/section/ChatBoradForm";
-import LogOutButton from "@/app/components/ui/LogOutButton";
 
 const Page = () => {
   // Get sender id
@@ -33,8 +32,10 @@ const Page = () => {
     }
   };
 
+
+
   return (
-    <div className="flex-1 flex flex-col h-full relative">
+    <div className="relative flex h-full flex-1 flex-col">
       {/* chat board header */}
       <ChatBoardHeader receiverId={receiverId} />
 
@@ -54,7 +55,7 @@ const Page = () => {
       />
 
       {/* logout button */}
-      <LogOutButton />
+      {/* <LogOutButton /> */}
     </div>
   );
 };

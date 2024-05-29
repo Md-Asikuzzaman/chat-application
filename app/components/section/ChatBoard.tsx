@@ -8,6 +8,7 @@ import { LegacyRef, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { MdDelete } from "react-icons/md";
 import clsx from "clsx";
+import { usePathname } from "next/navigation";
 
 interface Props {
   senderId: string;
@@ -25,8 +26,14 @@ const ChatBoard: NextPage<Props> = ({
   const [previousMessages, setPreviousMessages] = useState<MessageType[]>([]);
   const queryClient = useQueryClient();
 
-  // Fetch data based on receiverID and senderID
-  const { data: messages, isLoading } = useQuery<MessageType[]>({
+  const path = usePathname();
+
+  // [FETCH] data based on receiverID and senderID
+  const {
+    data: messages,
+    isLoading,
+    isFetching,
+  } = useQuery<MessageType[]>({
     queryKey: ["fetch_messages"],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -37,12 +44,11 @@ const ChatBoard: NextPage<Props> = ({
       );
       return data.messages;
     },
-
     enabled: receiverId && senderId ? true : false,
     refetchInterval: 1000,
   });
 
-  // [DELETE] messages
+  // [DELETE] message by ID
   const { mutate } = useMutation({
     mutationKey: ["delete_message"],
     mutationFn: async (id: string) => {
@@ -61,23 +67,19 @@ const ChatBoard: NextPage<Props> = ({
     onMutate: async (id: string) => {
       // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["fetch_messages"] });
-
       // Snapshot the previous value
       const previousMessages = queryClient.getQueryData(["fetch_messages"]);
-
       // Optimistically update to the new value
       queryClient.setQueryData(["fetch_messages"], (old: MessageType[]) => {
         // Filter out posts with IDs present in the 'id' array
         return old.filter((message) => message.id !== id);
       });
-
       return { previousMessages };
     },
 
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch_messages"] });
-      // scrollToBottom();
     },
   });
 
@@ -95,25 +97,18 @@ const ChatBoard: NextPage<Props> = ({
     setPreviousMessages(messages || []);
   }, [messages]);
 
-  // Filter all messages by sender and receiver id
-  const filteredMessage = messages?.filter(
-    (message) =>
-      (message.senderId === senderId && message.receiverId === receiverId) ||
-      (message.receiverId === senderId && message.senderId === receiverId),
-  );
-
   // Check chat Inview
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref);
 
   useEffect(() => {
     if (inView) {
-      updateStatus(receiverId);
+      updateStatusMutate(receiverId);
     }
   }, [inView]);
 
-  // [UPDATE] message based on InView
-  const { mutate: updateStatus } = useMutation({
+  // [UPDATE] online status by InView
+  const { mutate: updateStatusMutate } = useMutation({
     mutationKey: ["update_message"],
     mutationFn: async (id: string) => {
       const { data } = await axios.patch(`/api/messages/${id}`, {
@@ -129,32 +124,59 @@ const ChatBoard: NextPage<Props> = ({
     },
   });
 
-  // check
-  const { data: getMessages } = useQuery<MessageType[]>({
-    queryKey: ["getMessage"],
-    queryFn: async () => {
-      const { data } = await axios.get(`/api/messages/${receiverId}`, {
-        baseURL: process.env.NEXTAUTH_URL,
-      });
+  const [status, setStatus] = useState<number>(0);
+  const [idStatus, setIdStatus] = useState<boolean>(false);
 
-      return data.messages;
-    },
+  useEffect(() => {
+    setStatus(0);
+    setIdStatus(false);
+  }, [path]);
 
-    refetchInterval: 1000,
+  useEffect(() => {
+    setStatus((prev) => prev + 1);
+    setIdStatus(true);
+  }, [isFetching, receiverId]);
 
-    enabled: receiverId ? true : false,
-  });
+  if ((idStatus && status < 2) || isLoading) {
+    return (
+      <div className="flex animate-pulse flex-col gap-5 p-5">
+        <div className="flex justify-start">
+          <div className="ms-2 h-8 w-full max-w-[300px] rounded-b-lg rounded-tr-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
 
-  // Filter all messages by sender and receiver id
-  const filteredMessageForLast = getMessages?.filter(
-    (message) =>
-      message.senderId === senderId ||
-      (message.receiverId === receiverId && message.senderId === receiverId) ||
-      message.receiverId === senderId,
-  );
+        <div className="flex justify-end">
+          <div className="ms-2 h-10 w-full max-w-[300px] rounded-b-lg rounded-tl-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
 
-  if (isLoading) {
-    return <h3 className="h-[calc(100vh-160px)] px-4">loading...</h3>;
+        <div className="flex justify-start">
+          <div className="ms-2 h-10 w-full max-w-[500px] rounded-b-lg rounded-tr-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-start">
+          <div className="ms-2 h-8 w-full max-w-[80px] rounded-b-lg rounded-tr-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-end">
+          <div className="ms-2 h-10 w-full max-w-[300px] rounded-b-lg rounded-tl-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-start">
+          <div className="ms-2 h-10 w-full max-w-[100px] rounded-b-lg rounded-tr-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-end">
+          <div className="ms-2 h-10 w-full max-w-[300px] rounded-b-lg rounded-tl-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-end">
+          <div className="ms-2 h-10 w-full max-w-[200px] rounded-b-lg rounded-tl-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+
+        <div className="flex justify-end">
+          <div className="ms-2 h-10 w-full max-w-[100px] rounded-b-lg rounded-tl-lg bg-gray-300 dark:bg-gray-600"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -188,20 +210,19 @@ const ChatBoard: NextPage<Props> = ({
             {/* main chat */}
             <div
               className="group/item flex max-w-[90%] items-center gap-1"
-              ref={
-                filteredMessageForLast && filteredMessageForLast.length - 1
-                  ? ref
-                  : null
-              }
+              ref={messages && messages.length - 1 ? ref : null}
             >
               <div
-                onClick={() => mutate(data.id && data.id)}
-                className={`grid h-6 w-6 shrink-0 translate-x-10 cursor-pointer place-content-center rounded-full bg-zinc-300 transition-transform group-hover/item:translate-x-0 ${
-                  senderId === data.senderId ? "grid" : "hidden"
-                }`}
+                onClick={() => data.id && mutate(data.id)}
+                className={clsx(
+                  "grid h-6 w-6 shrink-0 translate-x-10 cursor-pointer place-content-center rounded-full bg-zinc-300  transition-transform group-hover/item:translate-x-0",
+                  senderId === data.senderId ? "grid" : "hidden",
+                )}
               >
                 <MdDelete className="text-zinc-500" />
               </div>
+
+              {/* SETUP for [text] type data */}
               {data.type === "text" && (
                 <div
                   className={clsx(
@@ -214,6 +235,8 @@ const ChatBoard: NextPage<Props> = ({
                   <p>{data.message}</p>
                 </div>
               )}
+
+              {/* SETUP for [file] type data */}
               {data.type === "file" && (
                 <div
                   className={clsx(

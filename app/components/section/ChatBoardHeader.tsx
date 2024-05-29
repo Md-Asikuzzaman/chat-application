@@ -7,13 +7,18 @@ import { CgMenuRight } from "react-icons/cg";
 
 import moment from "moment";
 import { useFriendListActive } from "@/lib/store";
+import LogOutButton from "../ui/LogOutButton";
 
 interface Props {
   receiverId: string;
 }
 
 const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
-  const { data: user, isLoading } = useQuery<UserType>({
+  const {
+    data: user,
+    isLoading,
+    isFetching,
+  } = useQuery<UserType>({
     queryKey: ["fetch_user"],
     queryFn: async () => {
       const { data } = await axios.get(`/api/users/${receiverId}`, {
@@ -24,9 +29,7 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
     enabled: receiverId ? true : false,
   });
 
-  const { friendListActive, setFriendListActive } = useFriendListActive();
-
-  console.log(friendListActive);
+  const { setFriendListActive } = useFriendListActive();
 
   return (
     <div className="relative flex items-center gap-5 bg-white px-4 py-4">
@@ -49,8 +52,7 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
       <div className="flex flex-1 justify-between">
         <div>
           <h4 className="font-semibold">
-            {isLoading && "Loading..."}
-            {user?.username}
+            {isLoading || isFetching ? "Loading..." : user?.username}
           </h4>
           <p className="text-xs text-zinc-500">
             {user?.status === "online"
@@ -59,6 +61,8 @@ const ChatBoardHeader: NextPage<Props> = ({ receiverId }) => {
           </p>
         </div>
       </div>
+
+      <LogOutButton />
     </div>
   );
 };
