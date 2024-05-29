@@ -142,81 +142,79 @@ const ChatBoard: NextPage<Props> = ({
 
   return (
     <div
-      className="bg-red flex h-[calc(100vh-160px)] flex-col overflow-x-hidden overflow-y-scroll px-5 py-2"
+      className="bg-red flex h-[calc(100vh-160px)] flex-col justify-center gap-2 overflow-x-hidden overflow-y-scroll px-5 py-2"
       ref={scrollRef}
     >
-      <div className="flex flex-col justify-end gap-2">
-        <AnimatePresence mode="popLayout">
-          {messages?.map((data, i) => (
-            <motion.div
-              initial={{
-                scale: 0,
-                opacity: 0,
-                y: 200,
-                visibility: "hidden",
-              }}
-              animate={{
-                scale: 1,
-                opacity: 1,
-                y: 0,
-                visibility: "visible",
-              }}
-              transition={{
-                ease: "backInOut",
-              }}
-              key={i}
-              className={clsx(
-                "flex shrink-0 ",
-                senderId === data.senderId ? "justify-end" : "justify-start",
-              )}
+      <AnimatePresence mode="popLayout">
+        {messages?.map((data, i) => (
+          <motion.div
+            initial={{
+              scale: 0,
+              opacity: 0,
+              y: 200,
+              visibility: "hidden",
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              y: 0,
+              visibility: "visible",
+            }}
+            transition={{
+              ease: "backInOut",
+            }}
+            key={i}
+            className={clsx(
+              "flex shrink-0 ",
+              senderId === data.senderId ? "justify-end" : "justify-start",
+            )}
+          >
+            {/* main chat */}
+            <div
+              className="group/item flex max-w-[90%] items-center gap-1"
+              ref={messages && messages.length - 1 ? ref : null}
             >
-              {/* main chat */}
               <div
-                className="group/item flex max-w-[90%] items-center gap-1"
-                ref={messages && messages.length - 1 ? ref : null}
+                onClick={() => data.id && mutate(data.id)}
+                className={clsx(
+                  "grid h-6 w-6 shrink-0 translate-x-10 cursor-pointer place-content-center rounded-full bg-zinc-300  transition-transform group-hover/item:translate-x-0",
+                  senderId === data.senderId ? "grid" : "hidden",
+                )}
               >
+                <MdDelete className="text-zinc-500" />
+              </div>
+
+              {/* SETUP for [text] type data */}
+              {data.type === "text" && (
                 <div
-                  onClick={() => data.id && mutate(data.id)}
                   className={clsx(
-                    "grid h-6 w-6 shrink-0 translate-x-10 cursor-pointer place-content-center rounded-full bg-zinc-300  transition-transform group-hover/item:translate-x-0",
-                    senderId === data.senderId ? "grid" : "hidden",
+                    "z-20 inline-block px-4 py-3",
+                    senderId === data.senderId
+                      ? "rounded-b-2xl rounded-s-2xl bg-[#6918b4] text-white"
+                      : "rounded-b-2xl rounded-e-2xl bg-[#E1D1F0] text-[#8318b4]",
                   )}
                 >
-                  <MdDelete className="text-zinc-500" />
+                  <p>{data.message}</p>
                 </div>
+              )}
 
-                {/* SETUP for [text] type data */}
-                {data.type === "text" && (
-                  <div
-                    className={clsx(
-                      "z-20 inline-block px-4 py-3",
-                      senderId === data.senderId
-                        ? "rounded-b-2xl rounded-s-2xl bg-[#6918b4] text-white"
-                        : "rounded-b-2xl rounded-e-2xl bg-[#E1D1F0] text-[#8318b4]",
-                    )}
-                  >
-                    <p>{data.message}</p>
-                  </div>
-                )}
-
-                {/* SETUP for [file] type data */}
-                {data.type === "file" && (
-                  <div
-                    className={clsx(
-                      "z-20 inline-block overflow-hidden",
-                      senderId === data.senderId
-                        ? "rounded-b-xl rounded-s-xl"
-                        : "rounded-b-xl rounded-e-xl",
-                    )}
-                  >
-                    <img src={data.message} height={200} width={200} />
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+              {/* SETUP for [file] type data */}
+              {data.type === "file" && (
+                <div
+                  className={clsx(
+                    "z-20 inline-block overflow-hidden",
+                    senderId === data.senderId
+                      ? "rounded-b-xl rounded-s-xl"
+                      : "rounded-b-xl rounded-e-xl",
+                  )}
+                >
+                  <img src={data.message} height={200} width={200} />
+                </div>
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };
